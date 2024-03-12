@@ -26,7 +26,7 @@
                     <div class="collapse navbar-collapse" id="navbarScroll">
                         <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#"><i
+                                <a class="nav-link active" aria-current="page" href="card.php"><i
                                         class="fas fa-list"></i>&nbsp;Giới thiệu
                                 </a>
                             </li>
@@ -63,7 +63,7 @@
                                         <hr class="dropdown-divider" />
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">Đơn hàng</a>
+                                        <a class="dropdown-item" href="">Đơn hàng</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#">Hàng đã mua</a>
