@@ -62,6 +62,8 @@
                 </ul>
               </li>
               <li class="nav-item"><a class="nav-link" href="index.php?url=contact">Liên hệ</a></li>
+              <li class="nav-item"><a class="nav-link" href="../admin/index.php">Đăng nhập Admin</a></li>
+
             </ul>
 
             <ul class="nav-shop">

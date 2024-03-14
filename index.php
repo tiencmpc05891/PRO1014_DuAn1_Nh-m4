@@ -43,9 +43,9 @@ if (isset($_GET['url'])) {
         case 'profile':
             include 'resources/users/profile.php';
             break;
-            case 'editprofile':
-                include 'resources/users/editprofile.php';
-                break;
+        case 'editprofile':
+            include 'resources/users/editprofile.php';
+            break;
         default:
             break;
     }
