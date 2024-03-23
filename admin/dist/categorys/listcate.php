@@ -149,19 +149,10 @@
 					<!--begin::Card toolbar-->
 					<div class="card-toolbar">
 						<!--begin::Button-->
-						<button type="button" class="btn btn-light-primary" data-bs-toggle="modal"
-							data-bs-target="#kt_modal_add_permission">
-							<!--begin::Svg Icon | path: icons/duotune/general/gen035.svg-->
-							<span class="svg-icon svg-icon-3">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-									fill="none">
-									<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="black" />
-									<rect x="10.8891" y="17.8033" width="12" height="2" rx="1"
-										transform="rotate(-90 10.8891 17.8033)" fill="black" />
-									<rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="black" />
-								</svg>
-							</span>
-							<!--end::Svg Icon-->Thêm danh mục</button>
+						<a href="index.php?url=addcate"><input type="button" value="Thêm mới danh mục"
+								class="btn btn-light-primary">
+
+						</a>
 						<!--end::Button-->
 					</div>
 					<!--end::Card toolbar-->
@@ -628,7 +619,7 @@
 										name="permission_name" />
 									<!--end::Input-->
 								</div>
-					
+
 								<div class="text-center pt-15">
 									<button type="reset" class="btn btn-light me-3"
 										data-kt-permissions-modal-action="cancel">Hủy</button>
@@ -705,9 +696,10 @@
 									<!--begin::Content-->
 									<div class="fw-bold">
 										<div class="fs-6 text-gray-700">
-											<strong class="me-1">Cảnh báo!</strong> Bằng cách chỉnh sửa tên quyền, bạn có thể phá
-												vỡ chức năng cấp quyền của hệ thống. Hãy đảm bảo bạn hoàn toàn chắc chắn
-												trước khi tiếp tục.
+											<strong class="me-1">Cảnh báo!</strong> Bằng cách chỉnh sửa tên quyền, bạn
+											có thể phá
+											vỡ chức năng cấp quyền của hệ thống. Hãy đảm bảo bạn hoàn toàn chắc chắn
+											trước khi tiếp tục.
 										</div>
 									</div>
 									<!--end::Content-->

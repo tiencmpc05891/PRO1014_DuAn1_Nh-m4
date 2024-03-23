@@ -1452,6 +1452,12 @@
 													</span>
 													<span class="menu-title">Danh sách danh mục</span>
 												</a>
+												<a class="menu-link" href="index.php?url=addcate">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Thêm mới danh mục</span>
+												</a>
 											</div>
 										</div>
 
@@ -1486,6 +1492,14 @@
 															<span class="bullet bullet-dot"></span>
 														</span>
 														<span class="menu-title">Danh sách sản phẩm</span>
+													</a>
+												</div>
+												<div class="menu-item">
+													<a class="menu-link" href="index.php?url=addproducts">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Thêm mới sản phẩm</span>
 													</a>
 												</div>
 											</div>

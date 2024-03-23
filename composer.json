@@ -1,0 +1,15 @@
+{
+    "name": "minht/pro1014_du-an1_nhom4",
+    "autoload": {
+        "psr-4": {
+            "dao\\": "dao/"
+        }
+    },
+    "authors": [
+        {
+            "name": "tiencmpc05891",
+            "email": "145202677+tiencmpc05891@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}

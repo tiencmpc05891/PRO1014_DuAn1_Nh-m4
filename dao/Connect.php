@@ -1,8 +1,12 @@
 <?php
+namespace dao;
+use PDO;
 class Connect
 {
+    private $conn;
+    protected $database;
     // Connection CSDL
-    function pdo_get_connection()
+    public function pdo_get_connection()
     {
         $servername = 'localhost';
         $dbname = 'wineshop';
@@ -13,14 +17,14 @@ class Connect
         return $conn;
     }
 
-    function pdo_execute($sql)
+    public function pdo_execute($sql)
     {
         $sql_args = array_slice(func_get_args(), 1);
         try {
             $conn = $this->pdo_get_connection();
             $stmt = $conn->prepare($sql);
             $stmt->execute($sql_args);
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw $e;
         } finally {
             unset($conn);
@@ -28,7 +32,7 @@ class Connect
     }
 
 
-    function pdo_query($sql)
+    public function pdo_query($sql)
     {
         $sql_args = array_slice(func_get_args(), 1);
         try {
@@ -37,7 +41,7 @@ class Connect
             $stmt->execute($sql_args);
             $rows = $stmt->fetchAll();
             return $rows;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw $e;
         } finally {
             unset($conn);
@@ -54,7 +58,7 @@ class Connect
             $stmt->execute($sql_args);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             return $row;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw $e;
         } finally {
             unset($conn);
@@ -70,10 +74,10 @@ class Connect
             $stmt->execute($sql_args);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             return array_values($row)[0];
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $e;
         } finally {
             unset($conn);
         }
     }
-} 
+}

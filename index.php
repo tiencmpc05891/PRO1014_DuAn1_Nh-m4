@@ -1,8 +1,16 @@
 <?php
+
+
 session_start();
 ob_start();
+
 include 'includes/header.php';
-if (isset($_GET['url'])) {
+
+// use dao\pdo\Connect;
+
+// $database = new Connect;
+
+if (isset ($_GET['url'])) {
     switch ($_GET['url']) {
         case 'home':
             include 'resources/home/home.php';
