@@ -54,6 +54,12 @@ if (isset ($_GET['url'])) {
         case 'editprofile':
             include 'resources/users/editprofile.php';
             break;
+        case 'quenpass':
+                include 'resources/users/quenpass.php';
+                break;
+        case 'kiemtralogin':
+                include 'resources/users/kiemtralogin.php';
+                break;        
         default:
             break;
     }
