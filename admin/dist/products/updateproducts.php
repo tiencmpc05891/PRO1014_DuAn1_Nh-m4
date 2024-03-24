@@ -1,3 +1,18 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$img = ""; // Khởi tạo biến $img
+if (isset($listsanpham['img'])) {
+    $hinhpath = "../public/uploads/images/" . $listsanpham['img'];
+    if (is_file($hinhpath)) {
+        $img = "<img src='" . $hinhpath . "' height='125'; >";
+    } else {
+        $img = "Không có hình";
+    }
+}
+?>
+
 <div class=" d-flex flex-column flex-row-fluid" id="kt_wrapper">
     <!--begin::Header-->
     <div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
@@ -14,7 +29,7 @@
                         <a href="../../demo7/dist/index.html" class="text-muted">Home</a>
                     </li>
                     <li class="breadcrumb-item text-muted">Quản lý sản phẩm</li>
-                    <li class="breadcrumb-item text-dark">Thêm mới sản phẩm</li>
+                    <li class="breadcrumb-item text-dark">Cập nhật sản phẩm</li>
                 </ul>
                 <!--end::Breadcrumb-->
             </div>
@@ -107,21 +122,7 @@
                     <!--begin::Card title-->
                     <div class="card-title">
                         <!--begin::Search-->
-                        <?php
-                        if (isset($thongbao) && $thongbao != "") {
-                            echo '   <button type="button" class="mb-1 btn btn-success" role="alert">
-                    <i  class=" mdi mdi-checkbox-marked-outline mr-1"></i>
-                   ' . $thongbao . '
-                  </button>';
-                        }
 
-                        if (isset($loi) && $loi != "") {
-                            echo '   <button type="button" class="mb-1 btn btn-danger" role="alert">
-                    <i class=" mdi mdi-close-circle-outline mr-1"></i>
-                   ' . $loi . '
-                  </button>';
-                        }
-                        ?>
                         <!--end::Search-->
                     </div>
                     <!--end::Card title-->
@@ -139,34 +140,28 @@
                 <div class="card-body pt-0">
                     <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                         <!--begin::Form-->
-                        <form class="form" action="index.php?url=addproducts" method="POST" enctype="multipart/form-data">
+                        <form class="form" action="index.php?url=updateproducts" method="POST" enctype="multipart/form-data">
                             <!--begin::Scroll-->
+                            <input type="hidden" name="product_id" value="<?= $listsanpham['product_id'] ?>">
                             <div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
                                 <!--begin::Input group-->
                                 <div class="fv-row mb-7">
                                     <!--begin::Label-->
-                                    <label class="d-block fw-bold fs-6 mb-5">Ảnh sản phẩm</label>
 
-                                    <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(../assets/media/avatars/blank.png)">
+
+                                    <label for="formFile" class="form-label">Hình ảnh</label>
+                                    <div class="image-input image-input-outline" data-kt-image-input="true">
                                         <!--begin::Preview existing avatar-->
-                                        <div class="image-input-wrapper w-125px h-125px" style="background-image: url(public/img/product/product1/8.3_56fec49dcbb146459a56fd6c77f85b02_master.jpg);">
+
+                                        <div class="mb-3">
+
+                                            <?php echo $img; ?>
+                                            <input class="form-control" type="file" name="img" accept=".png, .jpg, .jpeg" id="formFile">
                                         </div>
 
-                                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-                                            <i class="bi bi-pencil-fill fs-7"></i>
-
-                                            <input type="file" name="img" accept=".png, .jpg, .jpeg" />
-
-                                        </label>
 
 
-                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-                                            <i class="bi bi-x fs-2"></i>
-                                        </span>
 
-                                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-                                            <i class="bi bi-x fs-2"></i>
-                                        </span>
 
                                     </div>
 
@@ -178,7 +173,7 @@
 
                                     <label class="required fw-bold fs-6 mb-2">Tên sản phẩm</label>
 
-                                    <input type="text" name="product_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Tên sản phẩm" />
+                                    <input type="text" name="product_name" class="form-control form-control-solid mb-3 mb-lg-0" value="<?= $listsanpham['product_name'] ?>" />
 
                                 </div>
 
@@ -187,7 +182,7 @@
                                     <label class="required fw-bold fs-6 mb-2">Giá</label>
 
 
-                                    <input type="number" name="price" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Giá tiền" />
+                                    <input type="number" name="price" value="<?= $listsanpham['price'] ?>" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Giá tiền" />
 
                                 </div>
 
@@ -196,7 +191,7 @@
                                     <label class="required fw-bold fs-6 mb-2">Số lượng</label>
 
 
-                                    <input type="number" name="stock_quantity" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Số lượng" />
+                                    <input type="number" name="stock_quantity" value="<?= $listsanpham['stock_quantity'] ?>" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Số lượng" />
 
                                 </div>
                                 <div class="d-flex flex-column mb-7 fv-row">
@@ -205,7 +200,7 @@
                                         <i class="cursor-pointer fas fa-exclamation-circle ms-2 fs-7"></i>
                                     </div>
                                     <!--end::Label-->
-                                    <textarea class="form-control form-control-solid rounded-3" name="description" rows="4"></textarea>
+                                    <textarea class="form-control form-control-solid rounded-3" name="description" rows="4"><?= $listsanpham['description'] ?></textarea>
                                 </div>
                                 <div class="d-flex flex-column mb-7 fv-row">
 
@@ -215,17 +210,13 @@
                                     </label>
 
                                     <select name="category_id" class="form-control form-control-solid mb-3 mb-lg-0">
-                                        <option value="">Vui lòng chọn danh mục</option>
                                         <?php
-
                                         foreach ($listdanhmuc as $danhmuc) {
-                                            extract($danhmuc);
-
-                                            echo '<option value="' . $category_id . '">' . $category_name . '</option>';
+                                            $selected = ($listsanpham['category_id'] == $danhmuc['category_id']) ? "selected" : "";
+                                            echo '<option value="' . $danhmuc['category_id'] . '" ' . $selected . '>' . $danhmuc['category_name'] . '</option>';
                                         }
                                         ?>
                                     </select>
-
 
                                 </div>
 
@@ -235,7 +226,7 @@
 
                             <div class="text-center pt-15">
                                 <button type="reset" class="btn btn-light me-3" data-kt-permissions-modal-action="cancel">Hủy</button>
-                                <input type="submit" name="add" value="Thêm mới" class="btn btn-primary">
+                                <input type="submit" name="update" value="Cập nhật" class="btn btn-primary">
                             </div>
                             <!--end::Actions-->
                         </form>
@@ -258,3 +249,16 @@
 
     <!--end::Footer-->
 </div>
+<script>
+    // Function to handle file input change event
+    function handleFileInputChange(event) {
+        // Get the image container element
+        var imageContainer = document.getElementById('image-container');
+
+        // Check if the image container has any child nodes
+        if (imageContainer.hasChildNodes()) {
+            // If it does, remove the child node (the old image)
+            imageContainer.removeChild(imageContainer.childNodes[0]);
+        }
+    }
+</script>

@@ -1,10 +1,12 @@
 <?php
 namespace dao;
+
 use PDO;
+
 class Connect
 {
-    private $conn;
-    protected $database;
+
+
     // Connection CSDL
     public function pdo_get_connection()
     {
@@ -17,13 +19,12 @@ class Connect
         return $conn;
     }
 
-    public function pdo_execute($sql)
+    public function pdo_execute($sql, $params)
     {
-        $sql_args = array_slice(func_get_args(), 1);
         try {
             $conn = $this->pdo_get_connection();
             $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
+            $stmt->execute($params); // Truyền danh sách tham số vào execute()
         } catch (\PDOException $e) {
             throw $e;
         } finally {
@@ -32,13 +33,12 @@ class Connect
     }
 
 
-    public function pdo_query($sql)
+    public function pdo_query($sql, $params = [])
     {
-        $sql_args = array_slice(func_get_args(), 1);
         try {
             $conn = $this->pdo_get_connection();
             $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
+            $stmt->execute($params); // Thay đổi ở đây
             $rows = $stmt->fetchAll();
             return $rows;
         } catch (\PDOException $e) {
@@ -48,14 +48,13 @@ class Connect
         }
     }
 
-    // Insert category
-    function pdo_query_one($sql)
+
+    public function pdo_query_one($sql, $params = [])
     {
-        $sql_args = array_slice(func_get_args(), 1);
         try {
             $conn = $this->pdo_get_connection();
             $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
+            $stmt->execute($params);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             return $row;
         } catch (\PDOException $e) {
@@ -65,13 +64,12 @@ class Connect
         }
     }
 
-    function pdo_query_value($sql)
+    public function pdo_query_value($sql, $params = [])
     {
-        $sql_args = array_slice(func_get_args(), 1);
         try {
             $conn = $this->pdo_get_connection();
             $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
+            $stmt->execute($params);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             return array_values($row)[0];
         } catch (\PDOException $e) {

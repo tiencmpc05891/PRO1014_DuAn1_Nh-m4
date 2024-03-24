@@ -13,25 +13,40 @@ class Categorys
         $this->database = new Connect();
     }
 
-    public function insert_danhmuc($tendanhmuc)
+    public function insert_danhmuc($category_name)
     {
         $sql = "INSERT INTO categories (category_name) VALUES (?)";
-        $this->database->pdo_execute($sql, $tendanhmuc);
+        $params = array($category_name); // Chuyển biến $category_name thành một mảng
+        $this->database->pdo_execute($sql, $params);
     }
+
 
     public function delete_danhmuc($category_id)
     {
+        // Kiểm tra xem có sản phẩm liên kết với danh mục không
         $sqlCheck = "SELECT COUNT(*) as count FROM products WHERE category_id = ?";
-        $result = $this->database->pdo_query_one($sqlCheck, $category_id);
+        $result = $this->database->pdo_query_one($sqlCheck, [$category_id]);
 
-        if ($result['count'] > 0) {
-            return false;
+        // Kiểm tra kết quả truy vấn và số lượng sản phẩm liên kết
+        if ($result && isset ($result['count']) && $result['count'] > 0) {
+            return false; // Nếu có sản phẩm liên kết hoặc có lỗi trong truy vấn, không thể xóa
         }
 
+        // Nếu không có sản phẩm liên kết, tiến hành xóa danh mục
         $sql = "DELETE FROM categories WHERE category_id = ?";
-        $this->database->pdo_execute($sql, $category_id);
+        $this->database->pdo_execute($sql, [$category_id]);
 
-        return true;
+        return true; // Trả về true nếu xóa thành công
+    }
+
+
+    public function update_created_at($created_at)
+    {
+        $sql = "UPDATE categories SET created_at = :created_at ORDER BY category_id DESC LIMIT 1";
+        $conn = $this->database->pdo_get_connection(); // Lấy kết nối từ lớp Connect
+        $stmt = $conn->prepare($sql); // Sử dụng prepare từ PDO
+        $stmt->bindParam(':created_at', $created_at);
+        $stmt->execute();
     }
 
     public function loadall_danhmuc()
@@ -41,17 +56,19 @@ class Categorys
         return $listdanhmuc;
     }
 
-    public function loadone_danhmuc($madanhmuc)
+    public function loadone_danhmuc($category_id)
     {
-        $sql = "SELECT * FROM danhmuc WHERE madanhmuc = ?";
-        $dm = $this->database->pdo_query_one($sql, $madanhmuc);
+        $sql = "SELECT * FROM categories WHERE category_id = " . $category_id;
+        $params = array($category_id);
+        $dm = $this->database->pdo_query_one($sql, $params);
         return $dm;
     }
 
-    public function update_danhmuc($madanhmuc, $tendanhmuc)
+    public function update_danhmuc($category_id, $category_name)
     {
-        $sql = "UPDATE danhmuc SET tendanhmuc = ? WHERE madanhmuc = ?";
-        $this->database->pdo_execute($sql, $tendanhmuc, $madanhmuc);
+        $sql = "UPDATE categories SET category_name = ? WHERE category_id = ?";
+        $params = array($category_name, $category_id);
+        $this->database->pdo_execute($sql, $params);
     }
 
     public function showdm($dsdm)
@@ -59,8 +76,8 @@ class Categorys
         $html_dm = '';
         foreach ($dsdm as $dm) {
             extract($dm);
-            $link = 'index.php?act=sanpham&madanhmuc=' . $madanhmuc;
-            $html_dm .= '<a href="' . $link . '">' . $tendanhmuc . '</a>';
+            $link = 'index.php?url=products&category_id=' . $category_id;
+            $html_dm .= '<a href="' . $link . '">' . $category_name . '</a>';
         }
 
         return $html_dm;
