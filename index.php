@@ -1,14 +1,26 @@
 <?php
-
-
 session_start();
 ob_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require_once "vendor/autoload.php";
 
 include 'includes/header.php';
 
 // use dao\pdo\Connect;
+use dao\Products;
+use dao\Connect;
+use dao\Categorys;
+use dao\Users;
+use dao\Comments;
 
-// $database = new Connect;
+
+$database = new Connect();
+$danhmuc = new Categorys();
+$sanpham = new Products();
+$users = new Users();
+$comments = new Comments();
 
 if (isset ($_GET['url'])) {
     switch ($_GET['url']) {
@@ -31,8 +43,11 @@ if (isset ($_GET['url'])) {
             include 'resources/product/tracking-order.php';
             break;
         case 'register':
+
+
             include 'resources/users/register.php';
             break;
+
         case 'single-blog':
             include 'resources/home/single-blog.php';
             break;
@@ -53,6 +68,33 @@ if (isset ($_GET['url'])) {
             break;
         case 'editprofile':
             include 'resources/users/editprofile.php';
+            break;
+        case 'comments':
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+                $customer_id = isset ($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+                $product_id = isset ($_POST['product_id']) ? $_POST['product_id'] : null;
+                $comment = isset ($_POST['comment']) ? $_POST['comment'] : null;
+                $comment_date = date('Y-m-d');
+                if (empty ($comment)) {
+                    $error = "Bình luận không được để trống!";
+                } else {
+                    $comments->insert_comment($product_id, $customer_id, $comment, $comment_date);
+                    header("Location: index.php?url=comments&product_id=" . $product_id);
+                    exit();
+                }
+            }
+            include 'resources/product/single-product.php';
+            break;
+        case 'forgotpassword':
+
+            include 'resources/users/forgotpassword.php';
+            break;
+        case 'logout':
+            session_unset();
+            session_destroy();
+
+            header('Location: index.php?url=login');
             break;
         default:
             break;
