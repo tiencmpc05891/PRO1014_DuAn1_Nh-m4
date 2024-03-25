@@ -57,11 +57,11 @@ class Products
 
     public function loadone_sanpham($product_id)
     {
-        $sql = "SELECT * FROM products WHERE product_id=" .$product_id;
+        $sql = "SELECT * FROM products WHERE product_id=" . $product_id;
         $params = array($product_id);
         $sp = $this->database->pdo_query_one($sql, $params);
         return $sp;
-        
+
     }
 
     public function load_sanpham_cungloai($product_id, $category_id)
@@ -74,9 +74,9 @@ class Products
 
     public function update_sanpham($product_id, $category_id, $product_name, $price, $description, $stock_quantity, $img)
     {
-        if (isset($_POST['product_id'])) {
+        if (isset ($_POST['product_id'])) {
             $product_id = $_POST['product_id'];
-    
+
             if ($img != "") {
                 $sql = "UPDATE products SET category_id=?, product_name=?, price=?, description=?, img=?, stock_quantity=? WHERE product_id=?";
                 $params = array($category_id, $product_name, $price, $description, $img, $stock_quantity, $product_id);
@@ -87,7 +87,7 @@ class Products
             $this->database->pdo_execute($sql, $params);
         }
     }
-    
+
 
     public function loadall_sanpham($kyw = "", $category_id = 0)
     {
