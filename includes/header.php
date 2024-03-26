@@ -68,12 +68,9 @@
               </li>
               <li class="nav-item"><a class="nav-link" href="index.php?url=contact">Liên hệ</a></li>
 
-              <?php
-// Kiểm tra nếu người dùng đã đăng nhập và có vai trò là admin
-if (isset($_SESSION['admin_id']) && $_SESSION['admin_id'] !== "") {
-    echo '<li class="nav-item"><a class="nav-link" href="../admin/index.php">Đăng nhập Admin</a></li>';
-}
-?>
+
+              <li class="nav-item"><a class="nav-link" href="../admin/index.php">Đăng nhập Admin</a></li>
+
             </ul>
 
             <ul class="nav-shop">

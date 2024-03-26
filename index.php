@@ -71,12 +71,12 @@ if (isset ($_GET['url'])) {
             break;
         case 'comments':
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-                $customer_id = isset ($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-                $product_id = isset ($_POST['product_id']) ? $_POST['product_id'] : null;
-                $comment = isset ($_POST['comment']) ? $_POST['comment'] : null;
+                $customer_id = isset($_POST['customer_id']) ? $_POST['customer_id'] : null;
+                $product_id = isset($_POST['product_id']) ? $_POST['product_id'] : null;
+                $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
                 $comment_date = date('Y-m-d');
-                if (empty ($comment)) {
+                
+                if (empty($comment)) {
                     $error = "Bình luận không được để trống!";
                 } else {
                     $comments->insert_comment($product_id, $customer_id, $comment, $comment_date);
@@ -84,6 +84,7 @@ if (isset ($_GET['url'])) {
                     exit();
                 }
             }
+            
             include 'resources/product/single-product.php';
             break;
         case 'forgotpassword':
