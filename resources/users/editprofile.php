@@ -1,31 +1,33 @@
 <?php
-if (isset ($_SESSION['user_id'])) {
-  $customer_id = $_SESSION['user_id'];
+if (isset($_SESSION['user']['customer_id'])) {
+    $customer_id = $_SESSION['user']['customer_id'];
 } else {
+    $customer_id = null;
 }
 $user_info = $users->getone_user($customer_id);
 if ($user_info) {
-  $customer_name = $user_info['customer_name'];
-  $email = $user_info['email'];
-  $phone = $user_info['phone'];
-  $address = $user_info['address'];
+    $customer_name = $user_info['customer_name'];
+    $email = $user_info['email'];
+    $phone = $user_info['phone'];
+    $address = $user_info['address'];
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-  $username = $_POST['username'];
-  $email = $_POST['email'];
-  $phone = $_POST['phone'];
-  $city = $_POST['city'];
-  if (isset ($_POST['password']) && !empty ($_POST['password'])) {
-    $password = $_POST['password'];
-  } else {
-    $password = null;
-  }
-  $users->update_user($_SESSION['user_id'], $username, $email, $phone, $city, $password);
-  header("Location: index.php?url=profile");
-  exit();
+    $customer_name = $_POST['username']; // Sửa thành $_POST['username']
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+    if (isset($_POST['password']) && !empty($_POST['password'])) {
+        $password = $_POST['password'];
+    } else {
+        $password = null;
+    }
+    $users->update_user($_SESSION['user']['customer_id'], $customer_name, $email, $phone, $address, $password);
+    header("Location: index.php?url=profile");
+    exit();
 }
 ?>
+
 <section class="vh-100" style="background-color: #f4f5f7;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -62,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <div class="row">
                     <div class="col-md-6 mb-3">
                       <label for="city" class="form-label">Thành phố</label>
-                      <input type="text" class="form-control" id="city" name="city" value="<?php echo $address; ?>">
+                      <input type="text" class="form-control" id="city" name="address" value="<?php echo $address; ?>">
                     </div>
 
                   </div>
