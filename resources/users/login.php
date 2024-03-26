@@ -27,7 +27,7 @@
 						<div class="hover">
 							<h4>New to our website?</h4>
 							<p>There are advances being made in science and technology everyday, and a good example of this is the</p>
-							<a class="button button-account" href="index.php?url=register">Create an Account</a>
+							<a class="button button-account" href="register.html">Create an Account</a>
 						</div>
 					</div>
 				</div>
@@ -49,7 +49,7 @@
 							</div>
 							<div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="button button-login w-100">Log In</button>
-								<a href="index.php?url=quenpass">Forgot Password?</a>
+								<a href="#">Forgot Password?</a>
 							</div>
 						</form>
 					</div>
@@ -58,6 +58,5 @@
 		</div>
 	</section>
 	<!--================End Login Box Area =================-->
-	
 
 

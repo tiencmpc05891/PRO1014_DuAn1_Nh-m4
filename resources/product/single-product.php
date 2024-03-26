@@ -1,3 +1,25 @@
+<!-- file single-product -->
+
+<?php
+if (isset ($_GET['product_id']) && ($_GET['product_id'] > 0)) {
+	$product_id = $_GET['product_id'];
+	$onesp = $sanpham->loadone_sanpham($product_id);
+	extract($onesp);
+	$sp_cung_loai = $sanpham->load_sanpham_cungloai($product_id, $category_id);
+}
+
+if (isset ($titlepage) && $titlepage != "") {
+	$title = $titlepage;
+} else {
+	$title = "Sản Phẩm";
+}
+
+$category_id = isset ($_GET['category_id']) ? $_GET['category_id'] : 1;
+$dssp = $sanpham->loadall_sanpham("", $category_id);
+
+
+?>
+
 <!-- ================ start banner area ================= -->
 <section class="blog-banner-area" id="blog">
 	<div class="container h-100">
@@ -23,30 +45,35 @@
 		<div class="row s_product_inner">
 			<div class="col-lg-6">
 				<div class="owl-carousel owl-theme s_Product_carousel">
+					<?php
+					extract($onesp);
+					$img = '../../../public/uploads/images/' . $img;
+
+					?>
 					<div class="single-prd-item">
-						<img class="img-fluid" src="public/img/product/product2/ro.webp" alt="">
+						<img class="img-fluid" src="<?= $img ?>" alt="">
 					</div>
-					<!-- <div class="single-prd-item">
-							<img class="img-fluid" src="img/category/s-p1.jpg" alt="">
-						</div>
-						<div class="single-prd-item">
-							<img class="img-fluid" src="img/category/s-p1.jpg" alt="">
-						</div> -->
+
 				</div>
 			</div>
 			<div class="col-lg-5 offset-lg-1">
 				<div class="s_product_text">
-					<h3>RƯỢU VANG ĐỎ Ý MONTELLORI TOSCANA GOLD CUVEE</h3>
-					<h2>999.000đ</h2>
+					<h3>
+						<?= $product_name ?>
+					</h3>
+					<h2>
+						<?= number_format($price, 0, '.', '.'); ?><sup>đ</sup>
+					</h2>
 					<ul class="list">
 						<li><a class="active" href="#"><span>Loại</span> : Rượu vang đỏ</a></li>
 						<li><a href="#"><span>Tình trạng</span> : còn hàng</a></li>
 					</ul>
-					<p>Rượu vang ý Montellori Toscana Gold Cuvee là một ví dụ điển hình cho loại rượu vang sáng tạo.
-						Được tạo ra bằng cách kết hợp các giống nho truyền thống và hiện đại, chai rượu này mang đến một
-						trải nghiệm mới lạ và đầy thú vị.
+					<p>
+						<?= $description ?>
 
-						.</p>
+
+						.
+					</p>
 					<div class="product_count">
 						<label for="qty">Số lượng:</label>
 						<button onclick="" class="increase items-count" type="button"><i
@@ -153,7 +180,7 @@
 									<h5> 14%</h5>
 								</td>
 							</tr>
-							
+
 						</tbody>
 					</table>
 				</div>
@@ -162,90 +189,71 @@
 				<div class="row">
 					<div class="col-lg-6">
 						<div class="comment_list">
-							<div class="review_item">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-1.png" alt="">
+							<?php
+							// Lấy tất cả các bình luận của sản phẩm
+							$all_comments = $comments->get_all_comments($product_id);
+
+							// Kiểm tra nếu có bình luận
+							if ($all_comments) {
+								foreach ($all_comments as $comment) {
+									$name = $comments->get_name_by_id($comment['customer_id']);
+
+									?>
+									<div class="review_item">
+										<div class="media">
+											<div class="d-flex">
+												<img src="public/img/5e67fa0bcd0230fb933e9c7a6169e953.jpg" alt="User Avatar"
+													width="40px">
+											</div>
+											<div class="media-body">
+												<h4>
+													<?php echo $name['customer_name']; ?>
+												</h4>
+												<h5>
+													<?php echo $comment['comment_date']; ?>
+												</h5>
+
+												<a class="reply_btn" href="#">Reply</a>
+											</div>
+										</div>
+
+										<p>
+											<?php echo $comment['comment']; ?>
+										</p>
 									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<h5>12th Feb, 2018 at 05:56 pm</h5>
-										<a class="reply_btn" href="#">Reply</a>
-									</div>
-								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-									laboris nisi ut aliquip ex ea
-									commodo</p>
-							</div>
-							<div class="review_item reply">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-2.png" alt="">
-									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<h5>12th Feb, 2018 at 05:56 pm</h5>
-										<a class="reply_btn" href="#">Reply</a>
-									</div>
-								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-									laboris nisi ut aliquip ex ea
-									commodo</p>
-							</div>
-							<div class="review_item">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-3.png" alt="">
-									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<h5>12th Feb, 2018 at 05:56 pm</h5>
-										<a class="reply_btn" href="#">Reply</a>
-									</div>
-								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-									laboris nisi ut aliquip ex ea
-									commodo</p>
-							</div>
+									<?php
+								}
+							} else {
+								// Hiển thị thông báo nếu không có bình luận
+								echo "<p>Không có bình luận nào cho sản phẩm này.</p>";
+							}
+							?>
+
+
+
 						</div>
 					</div>
 					<div class="col-lg-6">
 						<div class="review_box">
-							<h4>Post a comment</h4>
-							<form class="row contact_form" action="contact_process.php" method="post" id="contactForm"
-								novalidate="novalidate">
+							<h4>Bình luận</h4>
+							<form class="row contact_form" action="index.php?url=comments" method="post"
+								id="contactForm" novalidate="novalidate">
 								<div class="col-md-12">
 									<div class="form-group">
-										<input type="text" class="form-control" id="name" name="name"
-											placeholder="Your Full name">
+										<input type="hidden" name="customer_id"
+											value="<?php echo isset ($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; ?>">
+										<input type="hidden" name="product_id"
+											value="<?php echo isset ($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">
+
+										<input type="text" class="form-control"  name="comment"
+											placeholder="Nhập bình luận">
 									</div>
 								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="email" class="form-control" id="email" name="email"
-											placeholder="Email Address">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="text" class="form-control" id="number" name="number"
-											placeholder="Phone Number">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<textarea class="form-control" name="message" id="message" rows="1"
-											placeholder="Message"></textarea>
-									</div>
-								</div>
+
+
+
 								<div class="col-md-12 text-right">
-									<button type="submit" value="submit" class="btn primary-btn">Submit Now</button>
+									<button type="submit" value="submit" class="btn primary-btn">Gửi</button>
 								</div>
 							</form>
 						</div>
@@ -393,116 +401,116 @@
 
 <!--================ Start related Product area =================-->
 <section class="related-product-area">
-  <div class="container">
-    <div class="section-intro pb-60px">
-      <p>Phổ biến trên shop</p>
-      <h2>Top <span class="section-intro__style">Sản phẩm</span></h2>
-    </div>
-    <div class="row mt-30">
-      <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-        <div class="single-search-product-wrapper">
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-        </div>
-      </div>
+	<div class="container">
+		<div class="section-intro pb-60px">
+			<p>Phổ biến trên shop</p>
+			<h2>Top <span class="section-intro__style">Sản phẩm</span></h2>
+		</div>
+		<div class="row mt-30">
+			<div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+				<div class="single-search-product-wrapper">
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-        <div class="single-search-product-wrapper">
-        <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-        </div>
-      </div>
+			<div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+				<div class="single-search-product-wrapper">
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-        <div class="single-search-product-wrapper">
-        <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-        </div>
-      </div>
+			<div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+				<div class="single-search-product-wrapper">
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-        <div class="single-search-product-wrapper">
-        <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-          <div class="single-search-product d-flex">
-            <a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-            <div class="desc">
-              <a href="#" class="title">Rượu vang đỏ</a>
-              <div class="price">999.000đ</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+				<div class="single-search-product-wrapper">
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+					<div class="single-search-product d-flex">
+						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
+						<div class="desc">
+							<a href="#" class="title">Rượu vang đỏ</a>
+							<div class="price">999.000đ</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 <!--================ end related Product area =================-->
