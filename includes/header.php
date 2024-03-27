@@ -59,8 +59,11 @@
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Trang</a>
                 <ul class="dropdown-menu">
-                  <li class="nav-item"><a class="nav-link" href="index.php?url=login">Đăng nhập</a></li>
-                  <li class="nav-item"><a class="nav-link" href="index.php?url=register">Đăng ký</a></li>
+                  <li class="nav-item" id="loginNavItem"><a class="nav-link" href="index.php?url=login"
+                      id="loginLink">Đăng nhập</a></li>
+                  <li class="nav-item" id="registerNavItem"><a class="nav-link" href="index.php?url=register"
+                      id="registerLink">Đăng ký</a></li>
+
                   <li class="nav-item"><a class="nav-link" href="index.php?url=profile">Hồ sơ</a></li>
                   <li class="nav-item"><a class="nav-link" href="index.php?url=tracking-order">Tracking</a></li>
                   <li class="nav-item"><a class="nav-link" href="index.php?url=logout">Đăng xuất</a></li>
@@ -83,4 +86,18 @@
         </div>
       </nav>
     </div>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger intent="WELCOME" chat-title="WineShop" agent-id="b917abd3-7225-4208-b15e-696f70637175"
+      language-code="en"></df-messenger>
   </header>
+
+  <script>
+    var isLoggedIn = <?php echo isset ($_SESSION['user']) ? 'true' : 'false'; ?>;
+    var loginNavItem = document.getElementById("loginNavItem");
+    var registerNavItem = document.getElementById("registerNavItem");
+
+    if (isLoggedIn) {
+      loginNavItem.style.display = "none";
+      registerNavItem.style.display = "none";
+    }
+  </script>
