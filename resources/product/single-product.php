@@ -111,6 +111,7 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 				<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
 					aria-controls="contact" aria-selected="false">Bình luận</a>
 			</li>
+
 			<li class="nav-item">
 				<a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab"
 					aria-controls="review" aria-selected="false">Reviews</a>
@@ -240,16 +241,15 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 								id="contactForm" novalidate="novalidate">
 								<div class="col-md-12">
 									<div class="form-group">
-									<input type="hidden" name="customer_id" value="<?php echo isset($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''; ?>">
-            <input type="hidden" name="product_id" value="<?php echo isset($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">
+										<input type="hidden" name="customer_id"
+											value="<?php echo isset ($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''; ?>">
+										<input type="hidden" name="product_id"
+											value="<?php echo isset ($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">
 
 										<input type="text" class="form-control" name="comment"
 											placeholder="Nhập bình luận">
 									</div>
 								</div>
-
-
-
 								<div class="col-md-12 text-right">
 									<button type="submit" value="submit" class="btn primary-btn">Gửi</button>
 								</div>
@@ -511,4 +511,50 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 		</div>
 	</div>
 </section>
-<!--================ end related Product area =================-->
+<script>
+document.getElementById("contactForm").addEventListener("submit", function(event) {
+    // Ngăn chặn hành vi mặc định của form (tải lại trang)
+    event.preventDefault();
+
+    // Kiểm tra trạng thái đăng nhập
+    var loggedIn = checkLoginStatus();
+
+    if (loggedIn) {
+        sendAjaxRequest();
+    } else {
+        localStorage.setItem("currentTab", "contact");
+        alert("Vui lòng đăng nhập để bình luận.");
+    }
+});
+
+function checkLoginStatus() {
+    return <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
+}
+
+function sendAjaxRequest() {
+
+    var formData = new FormData(document.getElementById("contactForm"));
+
+    // Gửi yêu cầu AJAX đến máy chủ
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "index.php?url=comments", true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            window.location.reload();
+        } else {
+            console.error("Lỗi khi gửi yêu cầu AJAX: " + xhr.status);
+        }
+    };
+    xhr.send(formData);
+}
+
+window.onload = function () {
+    var currentTab = localStorage.getItem("currentTab");
+    if (currentTab === "contact") {
+        document.getElementById("contact-tab").click();
+    }
+};
+
+
+</script>
