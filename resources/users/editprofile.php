@@ -1,30 +1,30 @@
 <?php
-if (isset($_SESSION['user']['customer_id'])) {
-    $customer_id = $_SESSION['user']['customer_id'];
+if (isset ($_SESSION['user']['customer_id'])) {
+  $customer_id = $_SESSION['user']['customer_id'];
 } else {
-    $customer_id = null;
+  $customer_id = null;
 }
 $user_info = $users->getone_user($customer_id);
 if ($user_info) {
-    $customer_name = $user_info['customer_name'];
-    $email = $user_info['email'];
-    $phone = $user_info['phone'];
-    $address = $user_info['address'];
+  $customer_name = $user_info['customer_name'];
+  $email = $user_info['email'];
+  $phone = $user_info['phone'];
+  $address = $user_info['address'];
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $customer_name = $_POST['username']; // Sửa thành $_POST['username']
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
-    if (isset($_POST['password']) && !empty($_POST['password'])) {
-        $password = $_POST['password'];
-    } else {
-        $password = null;
-    }
-    $users->update_user($_SESSION['user']['customer_id'], $customer_name, $email, $phone, $address, $password);
-    header("Location: index.php?url=profile");
-    exit();
+  $customer_name = $_POST['username'];
+  $email = $_POST['email'];
+  $phone = $_POST['phone'];
+  $address = $_POST['address'];
+  if (isset ($_POST['password']) && !empty ($_POST['password'])) {
+    $password = $_POST['password'];
+  } else {
+    $password = null;
+  }
+  $users->update_user($_SESSION['user']['customer_id'], $customer_name, $email, $phone, $address, $password);
+  header("Location: index.php?url=profile");
+  exit();
 }
 ?>
 

@@ -1,18 +1,29 @@
-<?php 
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$email = $_POST['email'];
-	$password = $_POST['password'];
-	$user = $users->sign_in($email);
-	if ($user && isset($password, $user['password'])) { 
-		unset($user['password']); 
-		$_SESSION['user'] = $user; 
-		header("Location: index.php");
-		exit(); 
-	} else {
-		$error = "Email hoặc mật khẩu không hợp lệ";
-	}
+    if (empty($_POST['email']) || empty($_POST['password'])) {
+        $error = "Vui lòng điền đầy đủ email và mật khẩu.";
+    } else {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $existing_user = $users->checkemail($email);
+
+        if ($existing_user) {
+            if (isset($password, $existing_user['password']) && isset($password, $existing_user['password'])) {
+                unset($existing_user['password']);
+                $_SESSION['user'] = $existing_user;
+                header("Location: index.php");
+                exit();
+            } else {
+                $error = "Mật khẩu không chính xác.";
+            }
+        } else {
+            $error = "Email không tồn tại trong hệ thống.";
+        }
+    }
 }
 ?>
+
+
 
 <!--================Login Box Area =================-->
 <section class="login_box_area section-margin mt-4">
@@ -21,28 +32,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<div class="col-lg-6">
 				<div class="login_box_img">
 					<div class="hover">
-						<h4>New to our website?</h4>
-						<p>There are advances being made in science and technology everyday, and a good example of this
-							is the</p>
-						<a class="button button-account" href="register.html">Create an Account</a>
+						<h4>Mới vào trang web của chúng tôi?</h4>
+						<p>Có những tiến bộ đang được thực hiện hàng ngày trong khoa học và công nghệ, và một ví dụ điển
+							hình về điều này
+							là</p>
+						<a class="button button-account" href="index.php?url=register">Tạo tài khoản</a>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-6">
 				<div class="login_form_inner">
-					<h3>Log in to enter</h3>
+					<h3>Đăng nhập</h3>
 					<form class="row login_form" action="index.php?url=login" id="contactForm" method="post">
 						<div class="col-md-12 form-group">
+						
 							<input type="text" class="form-control" id="email" name="email" placeholder="Email"
-								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" required>
+								required>
 						</div>
 						<div class="col-md-12 form-group">
+						
 							<input type="password" class="form-control" id="password" name="password"
-								placeholder="Password" onfocus="this.placeholder = ''"
-								onblur="this.placeholder = 'Password'" required>
+								placeholder="Password" required>
 						</div>
 						<div class="col-md-12 form-group">
-							<button type="submit" value="submit" class="button button-login w-100">Log In</button>
+							<button type="submit" value="submit" class="button button-login w-100">Đăng nhập</button>
 						</div>
 						<?php if (isset ($error)): ?>
 							<div class="col-md-12 form-group">
@@ -51,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 								</p>
 							</div>
 						<?php endif; ?>
-						<a href="index.php?url=forgotpassword">quên mật khẩu</a>
+						Quên mật khẩu?&nbsp;<a href="index.php?url=forgotpassword">Lấy lại mật khẩu tại đây</a>
 					</form>
 				</div>
 			</div>
