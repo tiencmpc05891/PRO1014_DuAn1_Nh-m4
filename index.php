@@ -22,7 +22,7 @@ $sanpham = new Products();
 $users = new Users();
 $comments = new Comments();
 
-if (isset ($_GET['url'])) {
+if (isset($_GET['url'])) {
     switch ($_GET['url']) {
         case 'home':
             include 'resources/home/home.php';
@@ -58,6 +58,7 @@ if (isset ($_GET['url'])) {
             include 'resources/product/confirmation.php';
             break;
         case 'login':
+
             include 'resources/users/login.php';
             break;
         case 'blog':
@@ -76,7 +77,7 @@ if (isset ($_GET['url'])) {
                 $product_id = isset($_POST['product_id']) ? $_POST['product_id'] : null;
                 $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
                 $comment_date = date('Y-m-d');
-            
+
                 if (empty($comment)) {
                     $error = "Bình luận không được để trống!";
                 } else {
@@ -93,9 +94,6 @@ if (isset ($_GET['url'])) {
                     }
                 }
             }
-
-
-
 
             include 'resources/product/single-product.php';
             break;

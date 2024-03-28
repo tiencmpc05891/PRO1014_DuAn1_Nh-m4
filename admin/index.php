@@ -13,10 +13,13 @@ include 'dist/slidebar.php';
 use dao\Products;
 use dao\Connect;
 use dao\Categorys;
+use dao\Comments;
 
 $database = new Connect();
 $danhmuc = new Categorys;
 $sanpham = new Products;
+$comment = new Comments();
+
 if (isset($_GET['url']) && ($_GET['url'] != "")) {
     switch ($_GET['url']) {
         case 'home':
@@ -28,7 +31,7 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             include 'dist/categorys/listcate.php';
             break;
         case 'addcate':
-            
+
             include 'dist/categorys/addcate.php';
             break;
 
@@ -154,6 +157,16 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             include 'dist/bill/bill.php';
             break;
         case 'listcomment':
+
+            $listcomment = $comment->get_all_comments() ;
+            include 'dist/comment/comment.php';
+            break;
+        case 'deletecomment':
+            
+            if (isset($_GET['comment_id']) && ($_GET['comment_id'] > 0)) {
+                $comment->delete_comment($_GET['comment_id']);
+            }
+            $listcomment = $comment->get_all_comments() ;
             include 'dist/comment/comment.php';
             break;
         case 'listnews':

@@ -16,12 +16,12 @@ class Users
     public function insert_nguoidung($customer_name, $email, $password)
     {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    
+
         $sql = "INSERT INTO customers (customer_name, email, password) VALUES (?, ?, ?)";
         $params = array($customer_name, $email, $hashed_password);
         $this->database->pdo_execute($sql, $params);
     }
-    
+
 
     public function sign_in($email)
     {
@@ -86,10 +86,10 @@ class Users
         $sp = $this->database->pdo_query_one($sql, $params);
         return $sp;
     }
-    function reset_pass($password, $email){
+    function reset_pass($password, $email)
+    {
         $sql = "UPDATE customers SET password = ? WHERE email = ?";
         $params = array($password, $email);
         $this->database->pdo_execute($sql, $params);
     }
 }
-   
