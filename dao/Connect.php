@@ -78,4 +78,17 @@ class Connect
             unset($conn);
         }
     }
+    public function pdo_execute_return_lastInsertId($sql, $params = [])
+    {
+        try {
+            $conn = $this->pdo_get_connection(); 
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            return $conn->lastInsertId();
+        } catch (\PDOException $e) {
+            throw $e;
+        } finally {
+            unset($conn);
+        }
+    }
 }

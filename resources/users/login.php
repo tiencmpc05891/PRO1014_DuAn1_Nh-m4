@@ -1,25 +1,27 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST['email']) || empty($_POST['password'])) {
-        $error = "Vui lòng điền đầy đủ email và mật khẩu.";
-    } else {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $existing_user = $users->checkemail($email);
+	if (empty($_POST['email']) || empty($_POST['password'])) {
+		$error = "Vui lòng điền đầy đủ email và mật khẩu.";
+	} else {
+		$email = $_POST['email'];
+		$password = $_POST['password'];
+		$existing_user = $users->checkemail($email);
 
-        if ($existing_user) {
-            if (isset($password, $existing_user['password']) && isset($password, $existing_user['password'])) {
-                unset($existing_user['password']);
-                $_SESSION['user'] = $existing_user;
-                header("Location: index.php");
-                exit();
-            } else {
-                $error = "Mật khẩu không chính xác.";
-            }
-        } else {
-            $error = "Email không tồn tại trong hệ thống.";
-        }
-    }
+		if ($existing_user) {
+			if (isset($password, $existing_user['password']) && isset($password, $existing_user['password'])) {
+				unset($existing_user['password']);
+				$_SESSION['user'] = $existing_user;
+				$_SESSION['customer_id'] = $existing_user['customer_id']; // Lưu customer_id vào session
+
+				header("Location: index.php");
+				exit();
+			} else {
+				$error = "Mật khẩu không chính xác.";
+			}
+		} else {
+			$error = "Email không tồn tại trong hệ thống.";
+		}
+	}
 }
 ?>
 
@@ -45,19 +47,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					<h3>Đăng nhập</h3>
 					<form class="row login_form" action="index.php?url=login" id="contactForm" method="post">
 						<div class="col-md-12 form-group">
-						
+
 							<input type="text" class="form-control" id="email" name="email" placeholder="Email"
 								required>
 						</div>
 						<div class="col-md-12 form-group">
-						
+
 							<input type="password" class="form-control" id="password" name="password"
 								placeholder="Password" required>
 						</div>
 						<div class="col-md-12 form-group">
 							<button type="submit" value="submit" class="button button-login w-100">Đăng nhập</button>
 						</div>
-						<?php if (isset ($error)): ?>
+						<?php if (isset($error)): ?>
 							<div class="col-md-12 form-group">
 								<p class="text-danger">
 									<?php echo $error; ?>

@@ -14,11 +14,13 @@ use dao\Products;
 use dao\Connect;
 use dao\Categorys;
 use dao\Comments;
+use dao\Cart;
 
 $database = new Connect();
 $danhmuc = new Categorys;
 $sanpham = new Products;
 $comment = new Comments();
+$cart = new Cart;
 
 if (isset($_GET['url']) && ($_GET['url'] != "")) {
     switch ($_GET['url']) {
@@ -153,20 +155,55 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             $listsanpham = $sanpham->loadall_sanpham("", 0);
             include "dist/products/listproducts.php";
             break;
+        case 'duyet_donhang':
+            if (isset($_POST['order_id'])) {
+                $id_donhang = $_POST['order_id'];
+
+
+                $trangthai_hientai = $cart->getTrangThaiDonHangByID($id_donhang);
+
+
+                if ($trangthai_hientai === 'Đơn hàng mới') {
+
+                    $trangthai_moi = 'Đang giao hàng';
+                } elseif ($trangthai_hientai === 'Đang giao hàng') {
+
+                    $trangthai_moi = 'Hoàn tất đơn hàng';
+                } else {
+
+                    echo "Không thể cập nhật trạng thái cho đơn hàng này.";
+                    exit;
+                }
+
+                $cart->updateTrangThaiDonHang($id_donhang, $trangthai_moi);
+
+                // Chuyển hướng đến trang danh sách đơn hàng
+                header('Location: index.php?url=listbill');
+                exit;
+            }
+            break;
         case 'listbill':
-            include 'dist/bill/bill.php';
+            $listbill = $cart->loadallBill();
+            include 'dist/bill/listbill.php';
+            break;
+        case 'xoabill':
+            if (isset($_GET['order_id']) && ($_GET['order_id'] > 0)) {
+                $cart->deleteDonHang($_GET['order_id']);
+            }
+            $listbill = $cart->loadallBill();
+            include 'dist/bill/listbill.php';
             break;
         case 'listcomment':
 
-            $listcomment = $comment->get_all_comments() ;
+            $listcomment = $comment->get_all_comments();
             include 'dist/comment/comment.php';
             break;
         case 'deletecomment':
-            
+
             if (isset($_GET['comment_id']) && ($_GET['comment_id'] > 0)) {
                 $comment->delete_comment($_GET['comment_id']);
             }
-            $listcomment = $comment->get_all_comments() ;
+            $listcomment = $comment->get_all_comments();
             include 'dist/comment/comment.php';
             break;
         case 'listnews':
