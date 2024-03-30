@@ -37,6 +37,7 @@ class Cart
                 $tong += $total_amount;
                 echo '<li>' . $cart['product_name'] . '<span class="middle">x ' . $quantity . '</span> <span class="last">' . number_format($total_amount, 0, '.', '.') . 'đ</span></li>';
             }
+
             echo '</ul>';
 
             // Hiển thị tổng tiền và phí ship
@@ -115,9 +116,8 @@ class Cart
                 echo '    <td>' . $cart['price'] . '<sup>đ</sup></td>';
                 echo '    <td>
             <div class="product_count">
-                <input type="text" name="qty" id="sst" maxlength="12" value="' . $cart['quantity'] . '" title="Quantity:" class="input-text qty">
-                <button class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                <button class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                <input type="number" name="quantity" id="quantity" maxlength="12" value="' . $cart['quantity'] . '" title="Quantity:" class="input-text qty">
+
             </div>
         </td>';
                 echo '    <td>' . number_format($total_amount, 0, '.', '.') . '<sup>đ</sup></td>';
@@ -161,10 +161,10 @@ class Cart
                         <h5>' . number_format($tong, 0, '.', '.') . '<sup>đ</sup></h5>
                     </div>
                     <a href="index.php?url=checkout">
-                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Tiếp tục thanh toán</button>
+                        <button class="btn btn-block btn-primary font-weight-bold ">Tiếp tục thanh toán</button>
                     </a>
                 </div>
-            </div>';
+            </div>';;
         }
 
         echo '    </div>

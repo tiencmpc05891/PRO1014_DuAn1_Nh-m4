@@ -1,20 +1,20 @@
 <!-- file single-product -->
 
 <?php
-if (isset ($_GET['product_id']) && ($_GET['product_id'] > 0)) {
+if (isset($_GET['product_id']) && ($_GET['product_id'] > 0)) {
 	$product_id = $_GET['product_id'];
 	$onesp = $sanpham->loadone_sanpham($product_id);
 	extract($onesp);
 	$sp_cung_loai = $sanpham->load_sanpham_cungloai($product_id, $category_id);
 }
 
-if (isset ($titlepage) && $titlepage != "") {
+if (isset($titlepage) && $titlepage != "") {
 	$title = $titlepage;
 } else {
 	$title = "Sản Phẩm";
 }
 
-$category_id = isset ($_GET['category_id']) ? $_GET['category_id'] : 1;
+$category_id = isset($_GET['category_id']) ? $_GET['category_id'] : 1;
 $dssp = $sanpham->loadall_sanpham("", $category_id);
 
 
@@ -75,19 +75,24 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 						.
 					</p>
 					<div class="product_count">
-						<label for="qty">Số lượng:</label>
-						<button onclick="" class="increase items-count" type="button"><i
-								class="ti-angle-left"></i></button>
-						<input type="text" name="qty" id="sst" size="2" maxlength="12" value="1" title="Quantity:"
-							class="input-text qty">
-						<button onclick="" class="reduced items-count" type="button"><i
-								class="ti-angle-right"></i></button>
-						<a class="button primary-btn" href="#">Thêm vào giỏ hàng</a>
+
+						<form action="index.php?url=addcart" method="post">
+							<!-- nữa làm giỏ hàng -->
+							<input type="hidden" name="cart_id" value="<?= $cart_id ?>">
+							<input type="hidden" name="product_name"
+								value="<?= isset($product_name) ? $product_name : '' ?>">
+							<input type="hidden" name="img" value="<?= isset($img) ? $img : '' ?>">
+							<input type="hidden" name="price" value="<?= isset($price) ? $price : '' ?>">
+							<!-- <input type="hidden" name="quantity" value="1"> -->
+							<label for="qty">Số lượng:</label>
+
+							<input type="number" name="quantity" min="1" max="10" value="1">
+
+							<input type="hidden" name="product_id" value="<?= isset($product_id) ? $product_id : '' ?>">
+
 					</div>
-					<div class="card_area d-flex align-items-center">
-						<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
-						<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
-					</div>
+					<input class="btn btn-primary" type="submit" name="addcart" value="Thêm vào giỏ hàng">
+					</form>
 				</div>
 			</div>
 		</div>
@@ -242,9 +247,9 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 								<div class="col-md-12">
 									<div class="form-group">
 										<input type="hidden" name="customer_id"
-											value="<?php echo isset ($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''; ?>">
+											value="<?php echo isset($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''; ?>">
 										<input type="hidden" name="product_id"
-											value="<?php echo isset ($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">
+											value="<?php echo isset($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">
 
 										<input type="text" class="form-control" name="comment"
 											placeholder="Nhập bình luận">
@@ -512,49 +517,49 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 	</div>
 </section>
 <script>
-document.getElementById("contactForm").addEventListener("submit", function(event) {
-    // Ngăn chặn hành vi mặc định của form (tải lại trang)
-    event.preventDefault();
+	document.getElementById("contactForm").addEventListener("submit", function (event) {
+		// Ngăn chặn hành vi mặc định của form (tải lại trang)
+		event.preventDefault();
 
-    // Kiểm tra trạng thái đăng nhập
-    var loggedIn = checkLoginStatus();
+		// Kiểm tra trạng thái đăng nhập
+		var loggedIn = checkLoginStatus();
 
-    if (loggedIn) {
-        sendAjaxRequest();
-    } else {
-        localStorage.setItem("currentTab", "contact");
-        alert("Vui lòng đăng nhập để bình luận.");
-    }
-});
+		if (loggedIn) {
+			sendAjaxRequest();
+		} else {
+			localStorage.setItem("currentTab", "contact");
+			alert("Vui lòng đăng nhập để bình luận.");
+		}
+	});
 
-function checkLoginStatus() {
-    return <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
-}
+	function checkLoginStatus() {
+		return <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
+	}
 
-function sendAjaxRequest() {
+	function sendAjaxRequest() {
 
-    var formData = new FormData(document.getElementById("contactForm"));
+		var formData = new FormData(document.getElementById("contactForm"));
 
-    // Gửi yêu cầu AJAX đến máy chủ
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "index.php?url=comments", true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            console.log(xhr.responseText);
-            window.location.reload();
-        } else {
-            console.error("Lỗi khi gửi yêu cầu AJAX: " + xhr.status);
-        }
-    };
-    xhr.send(formData);
-}
+		// Gửi yêu cầu AJAX đến máy chủ
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "index.php?url=comments", true);
+		xhr.onload = function () {
+			if (xhr.status === 200) {
+				console.log(xhr.responseText);
+				window.location.reload();
+			} else {
+				console.error("Lỗi khi gửi yêu cầu AJAX: " + xhr.status);
+			}
+		};
+		xhr.send(formData);
+	}
 
-window.onload = function () {
-    var currentTab = localStorage.getItem("currentTab");
-    if (currentTab === "contact") {
-        document.getElementById("contact-tab").click();
-    }
-};
+	window.onload = function () {
+		var currentTab = localStorage.getItem("currentTab");
+		if (currentTab === "contact") {
+			document.getElementById("contact-tab").click();
+		}
+	};
 
 
 </script>

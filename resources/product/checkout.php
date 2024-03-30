@@ -71,7 +71,8 @@
                             <input type="text" class="form-control" id="address" name="address" value="<?= $address ?>">
                             <span class="placeholder"></span>
                         </div>
-                       
+                        <a href="index.php?url=cart"><input type="text" class="btn btn-primary" value="Quay lại trang trước"></a>
+
 
                 </div>
                 <div class="col-lg-4">
