@@ -13,10 +13,15 @@ include 'dist/slidebar.php';
 use dao\Products;
 use dao\Connect;
 use dao\Categorys;
+use dao\Comments;
+use dao\Blog;
 
 $database = new Connect();
 $danhmuc = new Categorys;
 $sanpham = new Products;
+$comment = new Comments();
+$blog = new Blog();
+
 if (isset($_GET['url']) && ($_GET['url'] != "")) {
     switch ($_GET['url']) {
         case 'home':
@@ -28,7 +33,7 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             include 'dist/categorys/listcate.php';
             break;
         case 'addcate':
-            
+
             include 'dist/categorys/addcate.php';
             break;
 
@@ -154,10 +159,38 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             include 'dist/bill/bill.php';
             break;
         case 'listcomment':
+
+            $listcomment = $comment->get_all_comments();
+            include 'dist/comment/comment.php';
+            break;
+        case 'deletecomment':
+
+            if (isset($_GET['comment_id']) && ($_GET['comment_id'] > 0)) {
+                $comment->delete_comment($_GET['comment_id']);
+            }
+            $listcomment = $comment->get_all_comments();
             include 'dist/comment/comment.php';
             break;
         case 'listnews':
+            $listblog = $blog->get_all_blog();
             include 'dist/news/new.php';
+            break;
+        case 'deleteblog':
+
+            if (isset($_GET['news_id']) && ($_GET['news_id'] > 0)) {
+                $blog->delete_blog($_GET['news_id']);
+            }
+            $listblog = $blog->get_all_blog();
+            include 'dist/news/new.php';
+            break;
+        case 'editblog':
+            if (isset($_GET['news_id']) && ($_GET['news_id'] > 0)) {
+                $listblog = $blog->getone_blog($_GET['news_id']);
+            }
+            include 'dist/news/updateblog.php';
+            break;
+        case 'addblog':
+            include 'dist/news/addblog.php';
             break;
         case 'listusers':
             include 'dist/user/user.php';
