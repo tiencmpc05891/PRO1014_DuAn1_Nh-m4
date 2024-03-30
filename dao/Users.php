@@ -92,4 +92,11 @@ class Users
         $params = array($password, $email);
         $this->database->pdo_execute($sql, $params);
     }
+    public function get_all_user()
+    {
+        $sql = "SELECT * FROM customers";
+        $params = array();
+        $result = $this->database->pdo_query($sql, $params);
+        return $result;
+    }
 }

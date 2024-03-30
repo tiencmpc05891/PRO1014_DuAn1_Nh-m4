@@ -14,12 +14,13 @@ use dao\Products;
 use dao\Connect;
 use dao\Categorys;
 use dao\Comments;
+use dao\Users;
 
 $database = new Connect();
 $danhmuc = new Categorys;
 $sanpham = new Products;
 $comment = new Comments();
-
+$user = new Users();
 if (isset($_GET['url']) && ($_GET['url'] != "")) {
     switch ($_GET['url']) {
         case 'home':
@@ -158,21 +159,22 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             break;
         case 'listcomment':
 
-            $listcomment = $comment->get_all_comments() ;
+            $listcomment = $comment->get_all_comments();
             include 'dist/comment/comment.php';
             break;
         case 'deletecomment':
-            
+
             if (isset($_GET['comment_id']) && ($_GET['comment_id'] > 0)) {
                 $comment->delete_comment($_GET['comment_id']);
             }
-            $listcomment = $comment->get_all_comments() ;
+            $listcomment = $comment->get_all_comments();
             include 'dist/comment/comment.php';
             break;
         case 'listnews':
             include 'dist/news/new.php';
             break;
         case 'listusers':
+            $listuser = $user->get_all_user();
             include 'dist/user/user.php';
             break;
         default:

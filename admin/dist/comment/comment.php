@@ -142,20 +142,13 @@
                             </span>
                             <!--end::Svg Icon-->
                             <input type="text" data-kt-permissions-table-filter="search"
-                                class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm danh mục" />
+                                class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm bình luận" />
                         </div>
                         <!--end::Search-->
                     </div>
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <!--begin::Button-->
-                        <a href="index.php?url=addcate"><input type="button" value="Thêm mới danh mục"
-                                class="btn btn-light-primary">
-
-                        </a>
-                        <!--end::Button-->
-                    </div>
+                   
                     <!--end::Card toolbar-->
                 </div>
                 <!--end::Card header-->
