@@ -9,15 +9,15 @@
 				data-kt-swapper="true" data-kt-swapper-mode="prepend"
 				data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
 				<!--begin::Heading-->
-				<h1 class="text-dark fw-bolder my-0 fs-2">Quản lý người dùng</h1>
+				<h1 class="text-dark fw-bolder my-0 fs-2">Quản lý đơn hàng</h1>
 				<!--end::Heading-->
 				<!--begin::Breadcrumb-->
 				<ul class="breadcrumb fw-bold fs-base my-1">
 					<li class="breadcrumb-item text-muted">
-						<a href="../../admin/dist/index.html" class="text-muted">Home</a>
+						<a href="index.php" class="text-muted">Home</a>
 					</li>
-					<li class="breadcrumb-item text-muted">Quản lý lý người dùng</li>
-					<li class="breadcrumb-item text-dark">Danh sách người dùng</li>
+					<li class="breadcrumb-item text-muted">Quản lý đơn hàng</li>
+					<li class="breadcrumb-item text-dark">Danh sách đơn hàng</li>
 				</ul>
 				<!--end::Breadcrumb-->
 			</div>
@@ -41,8 +41,8 @@
 				</div>
 				<!--end::Aside mobile toggle-->
 				<!--begin::Logo-->
-				<a href="../../admin/dist/index.html" class="d-flex align-items-center">
-					<img alt="Logo" src="assets/media/logos/logo-admin.svg" class="h-30px" />
+				<a href="index.php" class="d-flex align-items-center">
+					<img alt="Logo" src="assets/media/logos/logo-demo7.svg" class="h-30px" />
 				</a>
 				<!--end::Logo-->
 			</div>
@@ -142,75 +142,125 @@
 							</span>
 							<!--end::Svg Icon-->
 							<input type="text" data-kt-permissions-table-filter="search"
-								class="form-control form-control-solid w-250px ps-15"
-								placeholder="Tìm kiếm người dùng" />
+								class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm đơn hàng" />
 						</div>
 						<!--end::Search-->
 					</div>
-					<!--end::Card title-->
-					<!--begin::Card toolbar-->
-
-					<!--end::Card toolbar-->
+	
 				</div>
 				<!--end::Card header-->
 				<!--begin::Card body-->
 				<div class="card-body pt-0">
 					<!--begin::Table-->
 					<?php
-					if (isset($thongbao) && !empty($thongbao) != "") {
+					if (isset ($thongbao) && !empty ($thongbao) != "") {
 						echo '   <button type="button" class="mb-1 btn btn-success" role="alert">
                     <i  class=" mdi mdi-checkbox-marked-outline mr-1"></i>
                    ' . $thongbao . '
                   </button>';
 					}
 
-					if (isset($loi) && $loi != "") {
+					if (isset ($loi) && $loi != "") {
 						echo '   <button type="button" class="mb-1 btn btn-danger" role="alert">
                     <i class=" mdi mdi-close-circle-outline mr-1"></i>
                    ' . $loi . '
                   </button>';
 					}
 					?>
+			
 					<table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
 						<!--begin::Table head-->
 						<thead>
 							<!--begin::Table row-->
-							<tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+							<tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
 
-								<th class="min-w-100px">Mã khách hàng</th>
-								<th class="min-w-100px">Tên khách hàng</th>
-								<th class="min-w-175px">Email</th>
-								<th class="min-w-125px">Số điện thoại</th>
-								<th class="min-w-125px">Địa chỉ</th>
-
-
+								<th class="min-w-70px">Mã đơn hàng</th>
+								<th class="min-w-100px">Khách hàng</th>
+								<th class="min-w-75px">Sản phẩm</th>
+								<th class="min-w-75px">Ngày đặt hàng</th>
+								<th class="min-w-75px">Tổng tiền</th>
+								<th class="min-w-75px">Tình trạng đơn</th>
+								<th class="min-w-75px">Duyệt đơn</th>
+								<th class="min-w-75px">Hành động</th>
 							</tr>
-							<!--end::Table row-->
 						</thead>
-						<!--end::Table head-->
-						<!--begin::Table body-->
-						<tbody class="fw-bold text-gray-600">
+				
+
+						<tbody class="text-gray-600 fw-bold">
 							<?php
-							foreach ($listuser as $user) {
-
-
-								echo '                        
+							foreach ($listbill as $bill) {
+								extract($bill);
+								$xoabill = "index.php?act=xoabill&order_id=" . $order_id;
+								$kh = $bill["fullname"] . '<br>' . $bill["email"] . '<br>' . $bill["address"] . '<br>' . $bill["phone"];
+								$ttdh = $cart->getTTDH($bill["trangthai"]);
+								$countsp = $cart->loadallCart_count($bill["order_id"]);
+								?>
 								<tr>
-									<td>' . $user['customer_id'] . '</td>
-									<td>' . $user['customer_name'] . '</td>
-									<td>' . $user['email'] . '</td>
-									<td>' . $user['phone'] . '</td>
-									<td>' . $user['address'] . '</td>
-									<td>
-									
+
+									<td>WINE -
+										<?php echo $bill['order_id']; ?>
 									</td>
-								</tr>';
+									<td>
+										<?php echo $kh; ?>
+									</td>
+									<td>
+										<?php echo $countsp; ?>
+									</td>
+									<td>
+										<?php echo $order_date; ?>
+									</td>
+									<td><strong>
+											<?php echo $bill["total_amount"]; ?>
+										</strong>VNĐ</td>
+									<td>
+										<?php echo $cart->getTTDH($bill["trangthai"]); ?>
+									</td>
+
+
+									<td>
+										<?php if ($ttdh === 'Đơn hàng mới' || $ttdh === 'Đang giao hàng'): ?>
+											<form action="index.php?url=duyet_donhang" method="post">
+												<input type="hidden" name="order_id" value="<?php echo $bill['order_id']; ?>">
+												<button type="submit" class="btn btn-success">Duyệt đơn</button>
+											</form>
+										<?php endif; ?>
+
+									</td>
+
+									<td>
+										<button class="btn btn-danger" type="button"
+											onclick="confirmDeleteOrder(<?php echo $bill['order_id']; ?>)">Xóa</button>
+									</td>
+
+
+
+								</tr>
+								<?php
 							}
 							?>
 
 						</tbody>
+						<!--end::Table body-->
 					</table>
+
 				</div>
+
 			</div>
+
 		</div>
+
 	</div>
+
+</div>
+<script>
+	function confirmDeleteOrder(order_id) {
+		var r = confirm("Bạn có chắc chắn muốn xóa đơn hàng này?");
+		if (r == true) {
+			// Nếu người dùng xác nhận muốn xóa, chuyển hướng đến URL xóa đơn hàng
+			window.location.href = "index.php?url=xoabill&order_id=" + order_id;
+		} else {
+			// Nếu người dùng không xác nhận muốn xóa, hiển thị thông báo
+			alert("Xóa đơn hàng đã bị hủy bỏ.");
+		}
+	}
+</script>

@@ -77,3 +77,26 @@ class Users
     }
 
 }
+
+    public function checkemail($email)
+    {
+        $sql = "SELECT * FROM customers WHERE email='" . $email . "'";
+        $params = array($email);
+        $sp = $this->database->pdo_query_one($sql, $params);
+        return $sp;
+    }
+    function reset_pass($password, $email)
+    {
+        $sql = "UPDATE customers SET password = ? WHERE email = ?";
+        $params = array($password, $email);
+        $this->database->pdo_execute($sql, $params);
+    }
+    public function get_all_user()
+    {
+        $sql = "SELECT * FROM customers";
+        $params = array();
+        $result = $this->database->pdo_query($sql, $params);
+        return $result;
+    }
+
+

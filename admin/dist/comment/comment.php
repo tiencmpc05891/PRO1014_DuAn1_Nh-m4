@@ -140,13 +140,18 @@
                                 </svg>
                             </span>
                             <!--end::Svg Icon-->
+
                             <input type="text" data-kt-user-table-filter="search"
                                 class="form-control form-control-solid w-250px ps-14" placeholder="Tìm kiếm sản phẩm" />
+                            <input type="text" data-kt-permissions-table-filter="search"
+                                class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm bình luận" />
+
                         </div>
                         <!--end::Search-->
                     </div>
                     <!--begin::Card title-->
                     <!--begin::Card toolbar-->
+
                     <div class="card-toolbar">
                         <!--begin::Toolbar-->
                         <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
