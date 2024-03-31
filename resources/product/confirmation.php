@@ -1,166 +1,83 @@
+<?php
+
+if (isset($_GET['order_id'])) {
+    $order_id = $_GET['order_id'];
+
+ 
+    $bill = $cart->loadoneBill($order_id);
 
   
-	<!-- ================ start banner area ================= -->	
-	<section class="blog-banner-area" id="category">
-		<div class="container h-100">
-			<div class="blog-banner">
-				<div class="text-center">
-					<h1>Lịch sử đơn hàng</h1>
-					<nav aria-label="breadcrumb" class="banner-breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Lịch sử đơn hàng</li>
-            </ol>
-          </nav>
-				</div>
-			</div>
-    </div>
-	</section>
-	<!-- ================ end banner area ================= -->
-  
-  <!--================Order Details Area =================-->
-  <section class="order_details section-margin--small">
-    <div class="container">
-      <p class="text-center billing-alert">Cảm ơn. Đơn đặt hàng của bạn đã được nhận.</p>
-      <div class="row mb-5">
-        <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
-          <div class="confirmation-card">
-            <h3 class="billing-title">Thông tin đơn hàng</h3>
-            <table class="order-rable">
-              <tr>
-                <td>ID Đơn hàng</td>
-                <td>: 1111</td>
-              </tr>
-              <tr>
-                <td>Ngày đặt hàng</td>
-                <td>: 3/12/2024</td>
-              </tr>
-              <tr>
-                <td>Tổng</td>
-                <td>: 999,000đ</td>
-              </tr>
-              <tr>
-                <td>Phương thức thanh toán</td>
-                <td>: VNPAY</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
-          <div class="confirmation-card">
-            <h3 class="billing-title">Địa chỉ</h3>
-            <table class="order-rable">
-              <tr>
-                <td>Địa chỉ</td>
-                <td>: Quận Ninh Kiều</td>
-              </tr>
-              <tr>
-                <td>  Thành phố</td>
-                <td>: TP.Cần Thơ</td>
-              </tr>
-              <tr>
-                <td>  Số điện thoại</td>
-                <td>: 098765323</td>
-              </tr>
-             
-              <tr>
-                <td>Email</td>
-                <td>: abc@gmai.com</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
-          <div class="confirmation-card">
-            <h3 class="billing-title">Địa chỉ giao hàng</h3>
-            <table class="order-rable">
-            <tr>
-                <td>Địa chỉ</td>
-                <td>: Quận Ninh Kiều</td>
-              </tr>
-              <tr>
-                <td>  Thành phố</td>
-                <td>: TP.Cần Thơ</td>
-              </tr>
-              <tr>
-                <td>  Số điện thoại</td>
-                <td>: 098765323</td>
-              </tr>
-             
-              <tr>
-                <td>Email</td>
-                <td>: abc@gmai.com</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="order_details_table">
-        <h2>Chi tiết đơn hàng</h2>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Sản phẩm</th>
-                <th scope="col">Số lượng</th>
-                <th scope="col">Tổng cộng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <p>Rượu vang đỏ</p>
-                </td>
-                <td>
-                  <h5>x 01</h5>
-                </td>
-                <td>
-                  <p>999,000đ</p>
-                </td>
-              </tr>
-              
-             
-              <tr>
-                <td>
-                  <h4>Tổng phụ</h4>
-                </td>
-                <td>
-                  <h5></h5>
-                </td>
-                <td>
-                  <p>999,000đ</p>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4>Phí giao hàng</h4>
-                </td>
-                <td>
-                  <h5></h5>
-                </td>
-                <td>
-                  <p>0đ</p>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <h4>Tổng cộng</h4>
-                </td>
-                <td>
-                  <h5></h5>
-                </td>
-                <td>
-                  <h4>999,000đ</h4>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!--================End Order Details Area =================-->
+    if ($bill) {
+?>
+        <div class="container">
+            <div class="text-center mt-2 mb-4">
+                <h2>Cảm ơn quý khách đã đặt hàng!</h2>
+            </div>
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <div class="border p-4">
+                        <h3>Thông tin đơn hàng</h3>
+                        <p>ID Đơn hàng: <?= $bill['order_id'] ?></p>
+                        <p>Tên người đặt: <?= $bill['fullname'] ?></p>
+                        <p>Tổng tiền: <?= number_format($bill['total_amount'], 0, '.', '.') ?>đ</p>
+                        <p>Phương thức thanh toán: <?= $bill['payment_method'] ?></p>
+                        <p>Địa chỉ: <?= $bill['address'] ?></p>
+                        <p>Ngày đặt hàng: <?= $bill['order_date'] ?></p>
+                        <p>Số điện thoại: <?= $bill['phone'] ?></p>
+                        <p>Email: <?= $bill['email'] ?></p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <?php
+                    // Hiển thị chi tiết sản phẩm trong đơn hàng từ giỏ hàng
+                    $listCart = $cart->loadallCart($order_id);
 
-
-
-  
+                    if ($listCart) {
+                    ?>
+                        <div class="border p-4">
+                            <h3 class="text-center mb-4">Chi tiết đơn hàng</h3>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Hình ảnh</th>
+                                            <th scope="col">Sản phẩm</th>
+                                            <th scope="col">Đơn giá</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($listCart as $item) {
+                                        ?>
+                                            <tr>
+                                                <td><img src="<?= $item['img'] ?>" alt="" width="80px"></td>
+                                                <td><?= $item['product_name'] ?></td>
+                                                <td><?= number_format($item['price'], 0, '.', '.') ?>đ</td>
+                                                <td><?= $item['quantity'] ?></td>
+                                                <td><?= number_format($item['total_amount'], 0, '.', '.') ?>đ</td>
+                                            </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php
+                    } else {
+                        echo "<p class='text-center'>Không có sản phẩm nào trong đơn hàng.</p>";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+<?php
+    } else {
+        echo "<p class='text-center'>Không tìm thấy đơn hàng.</p>";
+    }
+} else {
+    echo "<p class='text-center'>Không có thông tin đơn hàng được cung cấp.</p>";
+}
+?>

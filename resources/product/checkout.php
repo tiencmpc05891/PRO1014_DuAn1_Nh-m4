@@ -31,95 +31,71 @@
         <div class="billing_details">
             <div class="row">
                 <div class="col-lg-8">
-                    <h3>Chi tiết thanh toán</h3>
-                    <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="first" name="name" placeholder="Họ">
-                            <span class="placeholder" data-placeholder="Họ"></span>
-                        </div>
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="last" name="name" placeholder="Tên">
-                            <span class="placeholder" data-placeholder="Tên"></span>
+                    <form action="index.php?url=confirmation" method="POST">
+
+                        <h3>Chi tiết thanh toán</h3>
+                        <?php
+                        if (isset($_SESSION['user'])) {
+                            extract($_SESSION['user']);
+                            $fullname = $_SESSION['user']['fullname'];
+                            $address = $_SESSION['user']['address'];
+                            $email = $_SESSION['user']['email'];
+                            $phone = $_SESSION['user']['phone'];
+                            // $customer_id = $_SESSION['user']['customer_id'];
+                        } else {
+                            $fullname = "";
+                            $address = "";
+                            $email = "";
+                            $phone = "";
+                            $user = "";
+                            // $customer_id = "";
+                        }
+                        ?>
+
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="fullname" name="fullname"
+                                value="<?= $fullname ?>">
+                            <span class="placeholder"></span>
                         </div>
 
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="number" name="number"
-                                placeholder="Số điện thoại">
+
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="phone" name="phone" value="<?= $phone ?>">
                             <span class="placeholder" data-placeholder="Số điện thoại"></span>
                         </div>
-                        <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="email" name="compemailany"
-                                placeholder=" Địa chỉ Email ">
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="email" name="email" value="<?= $email ?>">
                             <span class="placeholder" data-placeholder=" Địa chỉ Email "></span>
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <select class="country_select">
-                                <option value="1">Country</option>
-                                <option value="2">Country</option>
-                                <option value="4">Country</option>
-                            </select>
+                            <input type="text" class="form-control" id="address" name="address" value="<?= $address ?>">
+                            <span class="placeholder"></span>
                         </div>
-                        <div class="col-md-12 form-group p_star">
-                            <input type="text" class="form-control" id="add1" name="add1" placeholder="Địa chỉ">
-                            <span class="placeholder" data-placeholder="Địa chỉ"></span>
-                        </div>
-                        <div class="col-md-12 form-group mb-0">
-                            <div class="creat_account">
-                                <h3>Chi tiết vận chuyển</h3>
-                                <input type="checkbox" id="f-option3" name="selector">
-                                <label for="f-option3">Giao đến địa chỉ khác?</label>
-                            </div>
-                            <textarea class="form-control" name="message" id="message" rows="1"
-                                placeholder="Ghi chú"></textarea>
-                        </div>
-                    </form>
+                        <a href="index.php?url=cart"><input type="text" class="btn btn-primary" value="Quay lại trang trước"></a>
+
+
                 </div>
                 <div class="col-lg-4">
-                    <div class="order_box">
-                        <h2>Your Order</h2>
-                        <ul class="list">
-                            <li><a href="#">
-                                    <h4>Sản phẩm <span>Tổng cộng</span></h4>
-                                </a></li>
-                            <li><a href="#">Rượu vang đỏ <span class="middle">x 01</span> <span
-                                        class="last">999,000đ</span></a></li>
 
-                        </ul>
-                        <ul class="list list_2">
-                            <li><a href="#">Tổng phụ <span>999,000đ</span></a></li>
-                            <li><a href="#">Phí ship <span>0đ</span></a></li>
-                            <li><a href="#">Tổng cộng <span>999,000đ</span></a></li>
-                        </ul>
-                        <div class="payment_item">
-                            <div class="radion_btn">
-                                <input type="radio" id="f-option5" name="selector">
-                                <label for="f-option5">Thanh toán khi nhận hàng</label>
-                                <div class="check"></div>
-                            </div>
 
-                        </div>
-                        <div class="payment_item active">
-                            <div class="radion_btn">
-                                <input type="radio" id="f-option6" name="selector">
-                                <label for="f-option6">VNPAY </label>
-                                <img src="" width="50px" alt="">
-                                <div class="check"></div>
-                            </div>
-                            <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
-                                account.</p>
-                        </div>
-                        <div class="creat_account">
-                            <input type="checkbox" id="f-option4" name="selector">
-                            <label for="f-option4">Tôi đã đọc và chấp nhận </label>
-                            <a href="#">điều khoản & điều kiện*</a>
-                        </div>
-                        <div class="text-center">
-                            <a class="button button-paypal" href="#">Tiếp tục thanh toán</a>
-                        </div>
-                    </div>
+
+                    <?php
+                    // Kiểm tra xem giỏ hàng có sản phẩm hay không
+                    if (sizeof($_SESSION['mycart']) > 0) {
+                        $cart->showcart(0, true);
+
+                    } else {
+                        // Nếu không có sản phẩm trong giỏ hàng, hiển thị thông báo
+                        echo '<div class="alert alert-warning" role="alert">Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi thanh toán.</div>';
+                    }
+                    ?>
+
+
                 </div>
             </div>
+            </form>
         </div>
+    </div>
     </div>
 </section>
 <!--================End Checkout Area =================-->

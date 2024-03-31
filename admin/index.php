@@ -14,15 +14,23 @@ use dao\Products;
 use dao\Connect;
 use dao\Categorys;
 use dao\Comments;
+
 use dao\Users;
 use dao\Admin;
+
+use dao\Cart;
+
 
 $database = new Connect();
 $danhmuc = new Categorys;
 $sanpham = new Products;
 $comment = new Comments();
+
 $user = new Users();
 $admin = new Admin();
+
+$cart = new Cart;
+
 if (isset($_GET['url']) && ($_GET['url'] != "")) {
     switch ($_GET['url']) {
         case 'home':
@@ -156,8 +164,43 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             $listsanpham = $sanpham->loadall_sanpham("", 0);
             include "dist/products/listproducts.php";
             break;
+        case 'duyet_donhang':
+            if (isset($_POST['order_id'])) {
+                $id_donhang = $_POST['order_id'];
+
+
+                $trangthai_hientai = $cart->getTrangThaiDonHangByID($id_donhang);
+
+
+                if ($trangthai_hientai === 'Đơn hàng mới') {
+
+                    $trangthai_moi = 'Đang giao hàng';
+                } elseif ($trangthai_hientai === 'Đang giao hàng') {
+
+                    $trangthai_moi = 'Hoàn tất đơn hàng';
+                } else {
+
+                    echo "Không thể cập nhật trạng thái cho đơn hàng này.";
+                    exit;
+                }
+
+                $cart->updateTrangThaiDonHang($id_donhang, $trangthai_moi);
+
+                // Chuyển hướng đến trang danh sách đơn hàng
+                header('Location: index.php?url=listbill');
+                exit;
+            }
+            break;
         case 'listbill':
-            include 'dist/bill/bill.php';
+            $listbill = $cart->loadallBill();
+            include 'dist/bill/listbill.php';
+            break;
+        case 'xoabill':
+            if (isset($_GET['order_id']) && ($_GET['order_id'] > 0)) {
+                $cart->deleteDonHang($_GET['order_id']);
+            }
+            $listbill = $cart->loadallBill();
+            include 'dist/bill/listbill.php';
             break;
         case 'listcomment':
 
@@ -199,24 +242,24 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             }
             include 'dist/admin/editAdmin.php';
             break;
-            case 'updateadmin':
-                if (isset($_POST['update']) && ($_POST['update'])) {
-                    $admin_id = $_POST['admin_id'];
-                    $username = $_POST['username'];
-                    $email = $_POST['email'];
-                    $role = $_POST['role'];
-                    $password = $_POST['password'];
-                    if (empty($username) || empty($email)) {
-                        $loi = "Dữ liệu không hợp lệ!";
-                    } else {
-                        $admin->update_admin($admin_id, $username, $password, $email, $role);
-                        $thongbao = "Cập nhật thành công!";
-                      
-                    }
+        case 'updateadmin':
+            if (isset($_POST['update']) && ($_POST['update'])) {
+                $admin_id = $_POST['admin_id'];
+                $username = $_POST['username'];
+                $email = $_POST['email'];
+                $role = $_POST['role'];
+                $password = $_POST['password'];
+                if (empty($username) || empty($email)) {
+                    $loi = "Dữ liệu không hợp lệ!";
+                } else {
+                    $admin->update_admin($admin_id, $username, $password, $email, $role);
+                    $thongbao = "Cập nhật thành công!";
+
                 }
-                $listadmin = $admin->get_all_admin();
+            }
+            $listadmin = $admin->get_all_admin();
             include 'dist/admin/admin.php';
-                break;
+            break;
         default:
             break;
     }

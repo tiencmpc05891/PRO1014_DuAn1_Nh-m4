@@ -65,7 +65,7 @@
                       id="registerLink">Đăng ký</a></li>
 
                   <li class="nav-item"><a class="nav-link" href="index.php?url=profile">Hồ sơ</a></li>
-                  <li class="nav-item"><a class="nav-link" href="index.php?url=tracking-order">Tracking</a></li>
+                  <li class="nav-item"><a class="nav-link" href="index.php?url=mybill">Đơn hàng của tôi</a></li>
                   <li class="nav-item"><a class="nav-link" href="index.php?url=logout">Đăng xuất</a></li>
                 </ul>
               </li>
@@ -77,8 +77,11 @@
 
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
+              <a href="index.php?url=cart">
               <li class="nav-item"><button><i class="ti-shopping-cart"></i><span
                     class="nav-shop__circle">3</span></button> </li>
+              </a>
+      
               <li class="nav-item"><a class="button button-header" href="#">Mua ngay</a></li>
             </ul>
           </div>

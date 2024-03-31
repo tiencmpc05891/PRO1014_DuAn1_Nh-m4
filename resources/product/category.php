@@ -146,7 +146,7 @@ $tendm = $sanpham->load_ten_dm($category_id);
                 <?php
                 extract($sp);
                 $linksp = "index.php?url=single-product&product_id=" . $sp['product_id'];
-                $img = '../../../public/uploads/images/' . $img;
+                $img = '../../public/uploads/images/' . $img;
                 $product_id = $sp['product_id'];
                 ?>
                 <div class="col-md-6 col-lg-4">
@@ -173,15 +173,16 @@ $tendm = $sanpham->load_ten_dm($category_id);
                       <p class="card-product__price">
                         <?= number_format($price, 0, '.', '.'); ?><sup>đ</sup>
                       </p>
-                      <form action="index.php?act=addtocart" method="post">
+                      <form action="index.php?url=addcart" method="post">
                         <!-- nữa làm giỏ hàng -->
-                        <!-- <input type="hidden" name="magiohang" value="<?= $magiohang ?>">
-                        <input type="hidden" name="tensanpham" value="<?= isset ($tensanpham) ? $tensanpham : '' ?>">
-                        <input type="hidden" name="img" value="<?= isset ($img) ? $img : '' ?>">
-                        <input type="hidden" name="gia" value="<?= isset ($gia) ? $gia : '' ?>">
-                        <input type="hidden" name="soluong" value="1">
-                        <input type="hidden" name="product_id" value="<?= isset ($product_id) ? $product_id : '' ?>"> -->
-                        <input class="btn btn-primary add-to-cart-btn" type="submit" name="addtocart"
+                        <input type="hidden" name="cart_id" value="<?= $cart_id ?>">
+                        <input type="hidden" name="product_name"
+                          value="<?= isset($product_name) ? $product_name : '' ?>">
+                        <input type="hidden" name="img" value="<?= isset($img) ? $img : '' ?>">
+                        <input type="hidden" name="price" value="<?= isset($price) ? $price : '' ?>">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="product_id" value="<?= isset($product_id) ? $product_id : '' ?>">
+                        <input class="btn btn-primary add-to-cart-btn" type="submit" name="addcart"
                           value="Thêm vào giỏ hàng">
                       </form>
                     </div>
@@ -350,4 +351,3 @@ $tendm = $sanpham->load_ten_dm($category_id);
     </div>
   </div>
 </section>
-<!-- ================ Subscribe section end ================= -->
