@@ -32,6 +32,14 @@ class Comments
         $result = $this->database->pdo_query($sql);
         return $result;
     }
+    public function update_comment_date($comment_date)
+    {
+        $sql = "UPDATE comments SET comment_date = :comment_date ORDER BY comment_id DESC LIMIT 1";
+        $conn = $this->database->pdo_get_connection(); // Lấy kết nối từ lớp Connect
+        $stmt = $conn->prepare($sql); // Sử dụng prepare từ PDO
+        $stmt->bindParam(':comment_date', $comment_date);
+        $stmt->execute();
+    }
     public function get_name_by_id($comment_id)
     {
         $sql = "SELECT customer_name FROM customers WHERE customer_id = ?";

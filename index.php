@@ -195,6 +195,9 @@ if (isset($_GET['url'])) {
                     if (isset($_SESSION['user'])) {
                         // Nếu người dùng đã đăng nhập, thêm bình luận vào cơ sở dữ liệu
                         $comments->insert_comment($product_id, $customer_id, $comment, $comment_date);
+                        date_default_timezone_set('Asia/Ho_Chi_Minh');
+                        $ngay_gio_hien_tai = date('Y-m-d H:i:s');
+                        $comments->update_comment_date($ngay_gio_hien_tai);
                         header("Location: index.php?url=comments&product_id=" . $product_id);
                         exit();
                     } else {
