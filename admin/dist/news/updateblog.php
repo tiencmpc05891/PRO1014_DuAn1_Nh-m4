@@ -1,17 +1,20 @@
-<?php if (isset($_POST['update']) && ($_POST['update'])) {
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $author = $_POST['author'];
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    if (empty($title)) {
-        $loi = "Tên bài viết không hợp lệ!";
+$img = ""; // Khởi tạo biến $img
+if (isset($listblog['img'])) {
+    $hinhpath = "../public/uploads/images/" . $listblog['img'];
+    if (is_file($hinhpath)) {
+        $img = "<img src='" . $hinhpath . "' height='125'; >";
     } else {
-        $blog->update_blog($title, $content, $author);
-        $thongbao = "Cập nhật thành công!";
-        header('Location: index.php?url=listnews');
+        $img = "Không có hình";
     }
 }
 ?>
+
+
+
 <div class=" d-flex flex-column flex-row-fluid" id="kt_wrapper">
     <!--begin::Header-->
     <div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
@@ -137,7 +140,7 @@
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <a href="index.php?url=listcate"><input type="button" value="Danh sách bài viết" class="btn btn-light-primary">
+                        <a href="index.php?url=listnews"><input type="button" value="Danh sách bài viết" class="btn btn-light-primary">
 
                         </a>
                         <!--end::Button-->
@@ -148,9 +151,20 @@
                 <div class="card-body pt-0">
                     <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
 
-                        <form class="form" action="index.php?url=editblog" method="POST">
+                        <form class="form" action="index.php?url=updateblog" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="news_id" value="<?= $listblog['news_id'] ?>">
 
+                            <div class="fv-row mb-7">
 
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Ảnh bài viết</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true"></i>
+                                </label>
+                                <?php echo $img; ?>
+
+                                <input type="file" class="form-control form-control-solid" name="img" accept=".png, .jpg, .jpeg" />
+
+                            </div>
                             <div class="fv-row mb-7">
 
                                 <label class="fs-6 fw-bold form-label mb-2">
@@ -158,8 +172,9 @@
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="Bài viết chỉ có một."></i>
                                 </label>
 
-                                <input type="text" name="title" value="<?php if (isset($title) && ($title != ""))
-                                                                            echo $title; ?>" class="form-control form-control-solid"  />
+
+
+                                <input type="text" class="form-control form-control-solid" name="title" value="<?= $listblog['title'] ?>">
 
                             </div>
                             <div class="fv-row mb-7">
@@ -169,8 +184,7 @@
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="Bài viết chỉ có một."></i>
                                 </label>
 
-                                <input type="text" name="content" value="<?php if (isset($content) && ($content != ""))
-                                                                                echo $content; ?>" class="form-control form-control-solid" placeholder="Điền tên bài viết" />
+                                <input type="text" class="form-control form-control-solid" name="content" value="<?= $listblog['content'] ?>">
 
                             </div>
                             <div class="fv-row mb-7">
@@ -180,8 +194,7 @@
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="Bài viết chỉ có một."></i>
                                 </label>
 
-                                <input type="text" name="author" value="<?php if (isset($author) && ($author != ""))
-                                                                            echo $author; ?>" class="form-control form-control-solid" placeholder="Điền tên bài viết" />
+                                <input type="text" class="form-control form-control-solid" name="author" value="<?= $listblog['author'] ?>">
 
                             </div>
 

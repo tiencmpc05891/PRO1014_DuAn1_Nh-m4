@@ -244,6 +244,32 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             }
             include 'dist/news/updateblog.php';
             break;
+        case 'updateblog':
+            if (isset($_POST['update']) && ($_POST['update'])) {
+                $news_id = $_POST['news_id'];
+                $title = $_POST['title'];
+                $content = $_POST['content'];
+                $author = $_POST['author'];
+                $img = $_FILES['img']['name'];
+                $target_dir = "../public/uploads/images/";
+                $target_file = $target_dir . basename($_FILES["img"]["name"]);
+                if (empty($title) || empty($content) || empty($author) || empty($img)) {
+                    $loi = "Vui lòng điền đầy đủ thông tin!";
+                } else {
+                    if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
+                        $blog->update_blog($news_id, $title, $content, $author, $img);
+                        $thongbao = "Cập nhật bài viết thành công";
+
+                    } else {
+                        $loi = "Lỗi khi thêm!";
+                    }
+
+
+                }
+            }
+            $listblog = $blog->get_all_blog();
+            include 'dist/news/new.php';
+            break;
         case 'addblog':
             include 'dist/news/addblog.php';
             break;

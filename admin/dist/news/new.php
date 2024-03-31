@@ -171,14 +171,27 @@
                         <tbody class="fw-bold text-gray-600">
                             <?php
                             foreach ($listblog as $blog) {
-                                $deleteblog = "index.php?url=deleteblog&news_id=" . $blog['news_id'];
-                                $editblog = "index.php?url=editblog&news_id=" . $blog['news_id'];
-                         echo '                        
+                                extract($blog);
+
+                                $hinhpath = "../public/uploads/images/" . $img;
+
+                                $deleteblog = "index.php?url=deleteblog&news_id=" . $news_id;
+                                $editblog = "index.php?url=editblog&news_id=" . $news_id;
+
+                                if (is_file($hinhpath)) {
+                                    $img = "<img src='" . $hinhpath . "' height='80' >";
+                                } else {
+                                    $img = "không có hình";
+                                }
+
+
+                                echo '                        
                             <tr>
-                                <td>' . $blog['title'] . '</td>
-                                <td>' . $blog['content'] . '</td>
-                                <td>' . $blog['author'] . '</td>
-                                <td>' . $blog['created_at'] . '</td>
+                                <td>' . $title . '</td>
+                                <td>' . $content . '</td>
+                                <td>' . $author . '</td>
+                                <td>' . $img . '</td>
+                                <td>' . $created_at . '</td>
                                 <td>
                                     <input class="btn btn-danger" type="button" value="Xóa" onclick="confirmDelete(\'' . $deleteblog . '\')">
                                     <a href="' . $editblog . '"><input class="btn btn-warning" type="button"  value="Sửa"></a> 
