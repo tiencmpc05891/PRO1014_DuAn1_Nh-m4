@@ -23,7 +23,7 @@ $users = new Users();
 $comments = new Comments();
 $cart = new Cart;
 
-if (isset ($_GET['url'])) {
+
 if (!isset($_SESSION['mycart']))
     $_SESSION['mycart'] = [];
 if (isset($_GET['url'])) {
@@ -188,4 +188,3 @@ if (isset($_GET['url'])) {
     include "./resources/home/home.php";
 }
 include "./includes/footer.php";
-}
