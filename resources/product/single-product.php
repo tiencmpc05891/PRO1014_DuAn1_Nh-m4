@@ -116,7 +116,6 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 				<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
 					aria-controls="contact" aria-selected="false">Bình luận</a>
 			</li>
-
 			<li class="nav-item">
 				<a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab"
 					aria-controls="review" aria-selected="false">Reviews</a>
@@ -197,7 +196,7 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 						<div class="comment_list">
 							<?php
 							// Lấy tất cả các bình luận của sản phẩm
-							$all_comments = $comments->get_comments($product_id);
+							$all_comments = $comments->get_all_comments($product_id);
 
 							// Kiểm tra nếu có bình luận
 							if ($all_comments) {
@@ -247,14 +246,21 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 								<div class="col-md-12">
 									<div class="form-group">
 										<input type="hidden" name="customer_id"
+
+											value="<?php echo isset ($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; ?>">
+
 											value="<?php echo isset($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''; ?>">
+
 										<input type="hidden" name="product_id"
 											value="<?php echo isset($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">
 
-										<input type="text" class="form-control" name="comment"
+										<input type="text" class="form-control"  name="comment"
 											placeholder="Nhập bình luận">
 									</div>
 								</div>
+
+
+
 								<div class="col-md-12 text-right">
 									<button type="submit" value="submit" class="btn primary-btn">Gửi</button>
 								</div>
@@ -516,6 +522,7 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 		</div>
 	</div>
 </section>
+<!--================ end related Product area =================-->
 <script>
 	document.getElementById("contactForm").addEventListener("submit", function (event) {
 		// Ngăn chặn hành vi mặc định của form (tải lại trang)

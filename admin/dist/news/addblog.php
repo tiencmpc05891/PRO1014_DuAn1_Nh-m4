@@ -1,3 +1,28 @@
+<?php
+if (!empty($_POST['add'])) {
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+    $author = $_POST['author'];
+    $img = $_FILES['img']['name'];
+    $target_dir = "../public/uploads/images/";
+    $target_file = $target_dir . basename($_FILES["img"]["name"]);
+    if (empty($title) || empty($content) || empty($author) || empty($img)) {
+        $loi = "Vui lòng điền đầy đủ thông tin!";
+    } else {
+        if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
+            $thongbao = "Thêm danh mục thành công";
+            $blog->insert_blog($title, $content, $author, $img);
+
+
+
+            header("Location: index.php?url=listnews");
+        } else {
+            $loi = "Lỗi khi thêm!";
+        }
+    }
+}
+?>
+
 <div class=" d-flex flex-column flex-row-fluid" id="kt_wrapper">
     <!--begin::Header-->
     <div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header"
@@ -9,15 +34,15 @@
                 data-kt-swapper="true" data-kt-swapper-mode="prepend"
                 data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
                 <!--begin::Heading-->
-                <h1 class="text-dark fw-bolder my-0 fs-2">Quản lý bình luận</h1>
+                <h1 class="text-dark fw-bolder my-0 fs-2">Quản lý bài viết</h1>
                 <!--end::Heading-->
                 <!--begin::Breadcrumb-->
                 <ul class="breadcrumb fw-bold fs-base my-1">
                     <li class="breadcrumb-item text-muted">
-                        <a href="../../admin/dist/index.html" class="text-muted">Home</a>
+                        <a href="../../demo7/dist/index.html" class="text-muted">Home</a>
                     </li>
-                    <li class="breadcrumb-item text-muted">Quản lý bình luận</li>
-                    <li class="breadcrumb-item text-dark">Danh sách bình luận</li>
+                    <li class="breadcrumb-item text-muted">Quản lý bài viết</li>
+                    <li class="breadcrumb-item text-dark">Thêm mới bài viết</li>
                 </ul>
                 <!--end::Breadcrumb-->
             </div>
@@ -41,8 +66,8 @@
                 </div>
                 <!--end::Aside mobile toggle-->
                 <!--begin::Logo-->
-                <a href="../../admin/dist/index.html" class="d-flex align-items-center">
-                    <img alt="Logo" src="assets/media/logos/logo-admin.svg" class="h-30px" />
+                <a href="../../demo7/dist/index.html" class="d-flex align-items-center">
+                    <img alt="Logo" src="assets/media/logos/logo-demo7.svg" class="h-30px" />
                 </a>
                 <!--end::Logo-->
             </div>
@@ -126,121 +151,112 @@
                 <div class="card-header mt-6">
                     <!--begin::Card title-->
                     <div class="card-title">
-
                         <!--begin::Search-->
-                        <div class="d-flex align-items-center position-relative my-1 me-5">
-                            <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
-                            <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none">
-                                    <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1"
-                                        transform="rotate(45 17.0365 15.1223)" fill="black" />
-                                    <path
-                                        d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
-                                        fill="black" />
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->
-                            <input type="text" data-kt-permissions-table-filter="search"
-                                class="form-control form-control-solid w-250px ps-15"
-                                placeholder="Tìm kiếm bình luận" />
-                        </div>
+                        <?php
+                        if (isset($thongbao) && $thongbao != "") {
+                            echo '   <button type="button" class="mb-1 btn btn-success" role="alert">
+                    <i  class=" mdi mdi-checkbox-marked-outline mr-1"></i>
+                   ' . $thongbao . '
+                  </button>';
+                        }
+
+                        if (isset($loi) && $loi != "") {
+                            echo '   <button type="button" class="mb-1 btn btn-danger" role="alert">
+                    <i class=" mdi mdi-close-circle-outline mr-1"></i>
+                   ' . $loi . '
+                  </button>';
+                        }
+                        ?>
                         <!--end::Search-->
                     </div>
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
+                    <div class="card-toolbar">
+                        <!--begin::Button-->
+                        <a href="index.php?url=listnews"><input type="button" value="Danh sách bài viết"
+                                class="btn btn-light-primary">
 
+                        </a>
+                        <!--end::Button-->
+                    </div>
                     <!--end::Card toolbar-->
                 </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
+
                 <div class="card-body pt-0">
-                    <!--begin::Table-->
-                    <?php
-                    if (isset($thongbao) && !empty($thongbao) != "") {
-                        echo '   <button type="button" class="mb-1 btn btn-success" role="alert">
-                    <i  class=" mdi mdi-checkbox-marked-outline mr-1"></i>
-                   ' . $thongbao . '
-                  </button>';
-                    }
+                    <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
 
-                    if (isset($loi) && $loi != "") {
-                        echo '   <button type="button" class="mb-1 btn btn-danger" role="alert">
-                    <i class=" mdi mdi-close-circle-outline mr-1"></i>
-                   ' . $loi . '
-                  </button>';
-                    }
-                    ?>
-                    <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
-                        <!--begin::Table head-->
-                        <thead>
-                            <!--begin::Table row-->
-                            <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <form class="form" action="index.php?url=addblog" method="POST" enctype="multipart/form-data">
 
-                                <th class="min-w-115px">Mã bình luận</th>
-                                <th class="min-w-115px">Mã sản phẩm</th>
-                                <th class="min-w-115px">Mã khách hàng</th>
-                                <th class="min-w-115px">Tên khách hàng</th>
-                                <th class="min-w-250px">Nội dung</th>
-                                <th class="min-w-115px">Ngày bình luận</th>
-                                <th class="min-w-115px">Hành động</th>
+                            <div class="fv-row mb-7">
 
-                            </tr>
-                            <!--end::Table row-->
-                        </thead>
-                        <!--end::Table head-->
-                        <!--begin::Table body-->
-                        <tbody class="fw-bold text-gray-600">
-                            <?php
-                            foreach ($listcomment as $comments) {
-                                $deletecomment = "index.php?url=deletecomment&comment_id=" . $comments['comment_id'];
-                                // Gọi phương thức từ đối tượng hiện tại trong vòng lặp
-                                $customer_name = $comment->get_name_by_id($comments['customer_id']);
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Ảnh bài viết</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover"
+                                        data-bs-trigger="hover" data-bs-html="true"></i>
+                                </label>
 
-                                echo '                        
-                                    <tr>
-                                        <td>' . $comments['comment_id'] . '</td>
-                                        <td>' . $comments['product_id'] . '</td>
-                                        <td>' . $comments['customer_id'] . '</td>
-                                        <td>' . $customer_name['customer_name'] . '</td>
-                                        <td>' . $comments['comment'] . '</td>
-                                        <td>' . $comments['comment_date'] . '</td>
-                                        <td>
-                                            <input class="btn btn-danger" type="button" value="Xóa" onclick="confirmDelete(\'' . $deletecomment . '\')">
-                                        </td>
-                                    </tr>';
-                            }
-                            ?>
+                                <input type="file" class="form-control form-control-solid" name="img"
+                                    accept=".png, .jpg, .jpeg" />
+
+                            </div>
+
+                            <div class="fv-row mb-7">
+
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Tên bài viết</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover"
+                                        data-bs-trigger="hover" data-bs-html="true"
+                                        data-bs-content="Bài viết chỉ có một."></i>
+                                </label>
+
+                                <input type="text" name="title" class="form-control form-control-solid"
+                                    placeholder="Điền tên bài viết" />
+
+                            </div>
+                            <div class="fv-row mb-7">
+
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Nội dung bài viết</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover"
+                                        data-bs-trigger="hover" data-bs-html="true"
+                                        data-bs-content="Bài viết chỉ có một."></i>
+                                </label>
 
 
+                                <input type="text" name="content" class="form-control form-control-solid"
+                                    placeholder="Điền nội dung bài viết" />
 
-                        </tbody>
-                    </table>
+                            </div>
+                            <div class="fv-row mb-7">
+
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Tên tác giả</span>
+                                    <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover"
+                                        data-bs-trigger="hover" data-bs-html="true"
+                                        data-bs-content="Bài viết chỉ có một."></i>
+                                </label>
+
+                                <input type="text" name="author" class="form-control form-control-solid"
+                                    placeholder="Điền tên tác giả" />
+                            </div>
+                            <div class="text-center pt-15">
+                                <button type="reset" class="btn btn-light me-3"
+                                    data-kt-permissions-modal-action="cancel">Hủy</button>
+                                <input type="submit" name="add" value="Thêm mới" class="btn btn-primary">
+                            </div>
+                            <!--end::Actions-->
+                        </form>
+                        <!--end::Form-->
+                    </div>
+
+
                 </div>
+                <!--end::Card body-->
             </div>
+
+            <!--end::Modals-->
         </div>
+        <!--end::Container-->
     </div>
-    <script>
-        function confirmDelete(url) {
-            var r = confirm("Bạn có chắc chắn muốn xóa?");
-            if (r == true) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", url, true);
 
-                xhr.onload = function () {
-                    if (xhr.status == 200) {
-                        alert('Xóa thành công.');
-                        window.location.reload(); // Reload trang chỉ khi xóa thành công
-                    } else if (xhr.status == 500) {
-                        alert("Không thể xóa danh mục vì có sản phẩm liên kết.");
-                    } else {
-                        alert("Đã xảy ra lỗi khi xóa danh mục.");
-                    }
-                };
-
-                xhr.send();
-            } else {
-                alert("Xóa đã bị hủy bỏ.");
-            }
-        }
-    </script>
+</div>

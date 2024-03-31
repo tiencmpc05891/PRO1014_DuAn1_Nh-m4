@@ -14,6 +14,7 @@ use dao\Products;
 use dao\Connect;
 use dao\Categorys;
 use dao\Comments;
+use dao\Blog;
 
 use dao\Users;
 use dao\Admin;
@@ -25,6 +26,7 @@ $database = new Connect();
 $danhmuc = new Categorys;
 $sanpham = new Products;
 $comment = new Comments();
+$blog = new Blog();
 
 $user = new Users();
 $admin = new Admin();
@@ -225,7 +227,51 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             include 'dist/comment/comment.php';
             break;
         case 'listnews':
+            $listblog = $blog->get_all_blog();
             include 'dist/news/new.php';
+            break;
+        case 'deleteblog':
+
+            if (isset($_GET['news_id']) && ($_GET['news_id'] > 0)) {
+                $blog->delete_blog($_GET['news_id']);
+            }
+            $listblog = $blog->get_all_blog();
+            include 'dist/news/new.php';
+            break;
+        case 'editblog':
+            if (isset($_GET['news_id']) && ($_GET['news_id'] > 0)) {
+                $listblog = $blog->getone_blog($_GET['news_id']);
+            }
+            include 'dist/news/updateblog.php';
+            break;
+        case 'updateblog':
+            if (isset($_POST['update']) && ($_POST['update'])) {
+                $news_id = $_POST['news_id'];
+                $title = $_POST['title'];
+                $content = $_POST['content'];
+                $author = $_POST['author'];
+                $img = $_FILES['img']['name'];
+                $target_dir = "../public/uploads/images/";
+                $target_file = $target_dir . basename($_FILES["img"]["name"]);
+                if (empty($title) || empty($content) || empty($author) || empty($img)) {
+                    $loi = "Vui lòng điền đầy đủ thông tin!";
+                } else {
+                    if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
+                        $blog->update_blog($news_id, $title, $content, $author, $img);
+                        $thongbao = "Cập nhật bài viết thành công";
+
+                    } else {
+                        $loi = "Lỗi khi thêm!";
+                    }
+
+
+                }
+            }
+            $listblog = $blog->get_all_blog();
+            include 'dist/news/new.php';
+            break;
+        case 'addblog':
+            include 'dist/news/addblog.php';
             break;
         case 'listusers':
             $listuser = $user->get_all_user();
@@ -263,7 +309,6 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
                 } else {
                     $admin->update_admin($admin_id, $username, $password, $email, $role);
                     $thongbao = "Cập nhật thành công!";
-
                 }
             }
             $listadmin = $admin->get_all_admin();

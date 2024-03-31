@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once "vendor/autoload.php";
-require_once "PHPMailer/sourceforgot.php";
+
 include 'includes/header.php';
 
 // use dao\pdo\Connect;
@@ -22,6 +22,7 @@ $sanpham = new Products();
 $users = new Users();
 $comments = new Comments();
 $cart = new Cart;
+
 
 if (!isset($_SESSION['mycart']))
     $_SESSION['mycart'] = [];
@@ -169,7 +170,6 @@ if (isset($_GET['url'])) {
             break;
 
         case 'login':
-
             include 'resources/users/login.php';
             break;
         case 'blog':
@@ -181,6 +181,7 @@ if (isset($_GET['url'])) {
         case 'editprofile':
             include 'resources/users/editprofile.php';
             break;
+
         case 'comments':
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Lấy dữ liệu từ form
@@ -230,6 +231,7 @@ if (isset($_GET['url'])) {
 
             header('Location: index.php?url=login');
             break;
+
         default:
             break;
     }

@@ -17,7 +17,6 @@ class Comments
         $sql = "INSERT INTO comments (product_id, customer_id, comment,comment_date ) VALUES (?, ?, ?, ?)";
         $params = array($product_id, $customer_id, $comment, $comment_date);
         $this->database->pdo_execute($sql, $params);
-
     }
     public function get_comments($product_id)
     {
@@ -32,6 +31,7 @@ class Comments
         $result = $this->database->pdo_query($sql);
         return $result;
     }
+
     public function update_comment_date($comment_date)
     {
         $sql = "UPDATE comments SET comment_date = :comment_date ORDER BY comment_id DESC LIMIT 1";
@@ -40,6 +40,9 @@ class Comments
         $stmt->bindParam(':comment_date', $comment_date);
         $stmt->execute();
     }
+
+
+
     public function get_name_by_id($comment_id)
     {
         $sql = "SELECT customer_name FROM customers WHERE customer_id = ?";
@@ -76,6 +79,5 @@ class Comments
     //     return $result;
 
     // }
-
 
 }
