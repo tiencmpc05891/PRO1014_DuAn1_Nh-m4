@@ -15,12 +15,14 @@ use dao\Connect;
 use dao\Categorys;
 use dao\Comments;
 use dao\Users;
+use dao\Admin;
 
 $database = new Connect();
 $danhmuc = new Categorys;
 $sanpham = new Products;
 $comment = new Comments();
 $user = new Users();
+$admin = new Admin();
 if (isset($_GET['url']) && ($_GET['url'] != "")) {
     switch ($_GET['url']) {
         case 'home':
@@ -177,6 +179,44 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             $listuser = $user->get_all_user();
             include 'dist/user/user.php';
             break;
+        case 'admin':
+            $listadmin = $admin->get_all_admin();
+            include 'dist/admin/admin.php';
+            break;
+        case 'addAdmin':
+
+            include 'dist/admin/addAdmin.php';
+            break;
+        case 'deleteadmin':
+            if (isset($_GET['admin_id']) && ($_GET['admin_id'] > 0)) {
+                $admin->delete_admin($_GET['admin_id']);
+            }
+            include 'dist/admin/admin.php';
+            break;
+        case 'editadmin':
+            if (isset($_GET['admin_id']) && ($_GET['admin_id'] > 0)) {
+                $oneadmin = $admin->getone_admin($_GET['admin_id']);
+            }
+            include 'dist/admin/editAdmin.php';
+            break;
+            case 'updateadmin':
+                if (isset($_POST['update']) && ($_POST['update'])) {
+                    $admin_id = $_POST['admin_id'];
+                    $username = $_POST['username'];
+                    $email = $_POST['email'];
+                    $role = $_POST['role'];
+                    $password = $_POST['password'];
+                    if (empty($username) || empty($email)) {
+                        $loi = "Dữ liệu không hợp lệ!";
+                    } else {
+                        $admin->update_admin($admin_id, $username, $password, $email, $role);
+                        $thongbao = "Cập nhật thành công!";
+                      
+                    }
+                }
+                $listadmin = $admin->get_all_admin();
+            include 'dist/admin/admin.php';
+                break;
         default:
             break;
     }
