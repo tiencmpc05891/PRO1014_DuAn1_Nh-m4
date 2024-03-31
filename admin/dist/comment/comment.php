@@ -142,13 +142,14 @@
                             </span>
                             <!--end::Svg Icon-->
                             <input type="text" data-kt-permissions-table-filter="search"
-                                class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm bình luận" />
+                                class="form-control form-control-solid w-250px ps-15"
+                                placeholder="Tìm kiếm bình luận" />
                         </div>
                         <!--end::Search-->
                     </div>
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
-                   
+
                     <!--end::Card toolbar-->
                 </div>
                 <!--end::Card header-->
@@ -176,12 +177,13 @@
                             <!--begin::Table row-->
                             <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
 
-                                <th class="min-w-125px">Mã bình luận</th>
-                                <th class="min-w-125px">Mã sản phẩm</th>
-                                <th class="min-w-125px">Mã khách hàng</th>
+                                <th class="min-w-115px">Mã bình luận</th>
+                                <th class="min-w-115px">Mã sản phẩm</th>
+                                <th class="min-w-115px">Mã khách hàng</th>
+                                <th class="min-w-115px">Tên khách hàng</th>
                                 <th class="min-w-250px">Nội dung</th>
-                                <th class="min-w-125px">Ngày bình luận</th>
-                                <th class="min-w-125px">Hành động</th>
+                                <th class="min-w-115px">Ngày bình luận</th>
+                                <th class="min-w-115px">Hành động</th>
 
                             </tr>
                             <!--end::Table row-->
@@ -190,22 +192,26 @@
                         <!--begin::Table body-->
                         <tbody class="fw-bold text-gray-600">
                             <?php
-                            foreach ($listcomment as $comment) {
-                                $deletecomment = "index.php?url=deletecomment&comment_id=" . $comment['comment_id'];
+                            foreach ($listcomment as $comments) {
+                                $deletecomment = "index.php?url=deletecomment&comment_id=" . $comments['comment_id'];
+                                // Gọi phương thức từ đối tượng hiện tại trong vòng lặp
+                                $customer_name = $comment->get_name_by_id($comments['customer_id']);
 
                                 echo '                        
-    <tr>
-        <td>' . $comment['comment_id'] . '</td>
-        <td>' . $comment['product_id'] . '</td>
-        <td>' . $comment['customer_id'] . '</td>
-        <td>' . $comment['comment'] . '</td>
-        <td>' . $comment['comment_date'] . '</td>
-        <td>
-            <input class="btn btn-danger" type="button" value="Xóa" onclick="confirmDelete(\'' . $deletecomment . '\')">
-        </td>
-    </tr>';
+                                <tr>
+                                    <td>' . $comments['comment_id'] . '</td>
+                                    <td>' . $comments['product_id'] . '</td>
+                                    <td>' . $comments['customer_id'] . '</td>
+                                    <td>' . $customer_name['customer_name'] . '</td>
+                                    <td>' . $comments['comment'] . '</td>
+                                    <td>' . $comments['comment_date'] . '</td>
+                                    <td>
+                                        <input class="btn btn-danger" type="button" value="Xóa" onclick="confirmDelete(\'' . $deletecomment . '\')">
+                                    </td>
+                                </tr>';
                             }
                             ?>
+
 
                         </tbody>
                     </table>
@@ -214,26 +220,26 @@
         </div>
     </div>
     <script>
-    function confirmDelete(url) {
-        var r = confirm("Bạn có chắc chắn muốn xóa?");
-        if (r == true) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url, true);
+        function confirmDelete(url) {
+            var r = confirm("Bạn có chắc chắn muốn xóa?");
+            if (r == true) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", url, true);
 
-            xhr.onload = function () {
-                if (xhr.status == 200) {
-                    alert('Xóa thành công.');
-                    window.location.reload(); // Reload trang chỉ khi xóa thành công
-                } else if (xhr.status == 500) {
-                    alert("Không thể xóa danh mục vì có sản phẩm liên kết.");
-                } else {
-                    alert("Đã xảy ra lỗi khi xóa danh mục.");
-                }
-            };
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        alert('Xóa thành công.');
+                        window.location.reload(); // Reload trang chỉ khi xóa thành công
+                    } else if (xhr.status == 500) {
+                        alert("Không thể xóa danh mục vì có sản phẩm liên kết.");
+                    } else {
+                        alert("Đã xảy ra lỗi khi xóa danh mục.");
+                    }
+                };
 
-            xhr.send();
-        } else {
-            alert("Xóa đã bị hủy bỏ.");
+                xhr.send();
+            } else {
+                alert("Xóa đã bị hủy bỏ.");
+            }
         }
-    }
-</script>
+    </script>

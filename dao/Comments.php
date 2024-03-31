@@ -66,7 +66,7 @@ class Comments
     //     $sql = "SELECT * FROM comments WHERE is_deleted = 0";
     //     $result = $this->database->pdo_query($sql);
     //     return $result;
-    
+
     // }
 
 
