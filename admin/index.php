@@ -86,6 +86,15 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             include "dist/categorys/listcate.php"; // Load trang danh sách danh mục
             break;
 
+        case 'restoreCategory':
+            if (isset($_GET['category_id']) && ($_GET['category_id'] > 0)) {
+                $category_id = $_GET['category_id'];
+                // Gọi phương thức để khôi phục danh mục
+                $danhmuc->restore_danhmuc($category_id);
+                $thongbao = "Khôi phục danh mục thành công.";
+            }
+            include "dist/categorys/restoreCategory.php";
+            break;
 
         case 'listproducts':
             if (isset($_POST['listok']) && ($_POST['listok'])) {
