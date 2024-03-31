@@ -283,7 +283,6 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
                 } else {
                     $admin->update_admin($admin_id, $username, $password, $email, $role);
                     $thongbao = "Cập nhật thành công!";
-
                 }
             }
             $listadmin = $admin->get_all_admin();

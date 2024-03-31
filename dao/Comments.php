@@ -17,13 +17,18 @@ class Comments
         $sql = "INSERT INTO comments (product_id, customer_id, comment,comment_date ) VALUES (?, ?, ?, ?)";
         $params = array($product_id, $customer_id, $comment, $comment_date);
         $this->database->pdo_execute($sql, $params);
-
     }
-    public function get_all_comments($product_id)
+    public function get_comments($product_id)
     {
         $sql = "SELECT * FROM comments WHERE product_id = ?";
         $params = array($product_id);
         $result = $this->database->pdo_query($sql, $params);
+        return $result;
+    }
+    public function get_all_comments()
+    {
+        $sql = "SELECT * FROM comments";
+        $result = $this->database->pdo_query($sql);
         return $result;
     }
 
@@ -61,7 +66,7 @@ class Comments
     //     $sql = "SELECT * FROM comments WHERE is_deleted = 0";
     //     $result = $this->database->pdo_query($sql);
     //     return $result;
-    
+
     // }
 
 }

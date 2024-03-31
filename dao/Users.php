@@ -75,9 +75,6 @@ class Users
         }
         $this->database->pdo_execute($sql, $params);
     }
-
-}
-
     public function checkemail($email)
     {
         $sql = "SELECT * FROM customers WHERE email='" . $email . "'";
@@ -85,7 +82,7 @@ class Users
         $sp = $this->database->pdo_query_one($sql, $params);
         return $sp;
     }
-    function reset_pass($password, $email)
+    public function reset_pass($password, $email)
     {
         $sql = "UPDATE customers SET password = ? WHERE email = ?";
         $params = array($password, $email);
@@ -98,5 +95,8 @@ class Users
         $result = $this->database->pdo_query($sql, $params);
         return $result;
     }
+}
+
+   
 
 
