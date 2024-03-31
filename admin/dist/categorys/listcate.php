@@ -147,9 +147,18 @@
 						<!--end::Search-->
 					</div>
 					<!--end::Card title-->
+
+					<!--begin::Button-->
+
+					<!--end::Button-->
+
 					<!--begin::Card toolbar-->
 					<div class="card-toolbar">
 						<!--begin::Button-->
+						<a href="index.php?url=restoreCategory"><input type="button" value="Thùng rác"
+								class="btn btn-light-danger">
+
+						</a>&nbsp;
 						<a href="index.php?url=addcate"><input type="button" value="Thêm mới danh mục"
 								class="btn btn-light-primary">
 
@@ -163,14 +172,14 @@
 				<div class="card-body pt-0">
 					<!--begin::Table-->
 					<?php
-					if (isset ($thongbao) && !empty ($thongbao) != "") {
+					if (isset($thongbao) && !empty($thongbao) != "") {
 						echo '   <button type="button" class="mb-1 btn btn-success" role="alert">
                     <i  class=" mdi mdi-checkbox-marked-outline mr-1"></i>
                    ' . $thongbao . '
                   </button>';
 					}
 
-					if (isset ($loi) && $loi != "") {
+					if (isset($loi) && $loi != "") {
 						echo '   <button type="button" class="mb-1 btn btn-danger" role="alert">
                     <i class=" mdi mdi-close-circle-outline mr-1"></i>
                    ' . $loi . '
@@ -186,6 +195,7 @@
 								<th class="min-w-125px">Mã danh mục</th>
 								<th class="min-w-250px">Tên danh mục</th>
 								<th class="min-w-125px">Ngày được tạo</th>
+								
 								<th class="min-w-125px">Hành động</th>
 
 							</tr>

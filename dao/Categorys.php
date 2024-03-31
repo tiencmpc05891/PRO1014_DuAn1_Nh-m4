@@ -23,22 +23,19 @@ class Categorys
 
     public function delete_danhmuc($category_id)
     {
-        // Kiểm tra xem có sản phẩm liên kết với danh mục không
-        $sqlCheck = "SELECT COUNT(*) as count FROM products WHERE category_id = ?";
-        $result = $this->database->pdo_query_one($sqlCheck, [$category_id]);
-
-        // Kiểm tra kết quả truy vấn và số lượng sản phẩm liên kết
-        if ($result && isset ($result['count']) && $result['count'] > 0) {
-            return false; // Nếu có sản phẩm liên kết hoặc có lỗi trong truy vấn, không thể xóa
-        }
-
-        // Nếu không có sản phẩm liên kết, tiến hành xóa danh mục
-        $sql = "DELETE FROM categories WHERE category_id = ?";
+        // Thực hiện xóa mềm danh mục
+        $sql = "UPDATE categories SET deleted_at = NOW() WHERE category_id = ?";
         $this->database->pdo_execute($sql, [$category_id]);
 
-        return true; // Trả về true nếu xóa thành công
+        return true; // Trả về true nếu xóa mềm thành công
     }
 
+    public function restore_danhmuc($category_id)
+    {
+        // Thực hiện khôi phục danh mục bằng cách cập nhật cột deleted_at thành NULL
+        $sql = "UPDATE categories SET deleted_at = NULL WHERE category_id = ?";
+        $this->database->pdo_execute($sql, [$category_id]);
+    }
 
     public function update_created_at($created_at)
     {
@@ -48,13 +45,20 @@ class Categorys
         $stmt->bindParam(':created_at', $created_at);
         $stmt->execute();
     }
-
+    public function show_deleted_categories()
+    {
+        $sql = "SELECT * FROM categories WHERE deleted_at IS NOT NULL"; // Lấy tất cả các bản ghi có deleted_at khác NULL
+        $deleted_categories = $this->database->pdo_query($sql);
+        return $deleted_categories;
+    }
+    
     public function loadall_danhmuc()
     {
-        $sql = "SELECT * FROM categories ORDER BY category_id DESC";
+        $sql = "SELECT * FROM categories WHERE deleted_at IS NULL ORDER BY category_id DESC";
         $listdanhmuc = $this->database->pdo_query($sql);
         return $listdanhmuc;
     }
+
 
     public function loadone_danhmuc($category_id)
     {

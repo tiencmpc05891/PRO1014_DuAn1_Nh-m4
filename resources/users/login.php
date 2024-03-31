@@ -10,8 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($existing_user) {
             if ($password === $existing_user['password']) {
-                unset($existing_user['password']);
-                $_SESSION['user'] = $existing_user;
+				$_SESSION['user'] = $existing_user;
+                    // Lấy customer_id dựa trên email và lưu vào session
+		        $_SESSION['customer_id'] = $existing_user['customer_id'];
                 if ($existing_user['role'] === 'admin') {
                     header("Location: ../admin/index.php");
                     exit();
