@@ -249,7 +249,8 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 
 											value="<?php echo isset ($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; ?>">
 
-											value="<?php echo isset($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''; ?>">
+											<input type="hidden" name="customer_id" value="<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : (isset($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''); ?>">
+
 
 										<input type="hidden" name="product_id"
 											value="<?php echo isset($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">

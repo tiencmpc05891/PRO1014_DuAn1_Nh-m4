@@ -6,7 +6,8 @@ if (!empty($_POST['add'])) {
 
     $username_duplicate = $admin->checkname($username);
     $email_duplicate = $admin->checkemail($email);
-
+    if (empty($username) || empty($email)) {
+        $loi = "Vui lòng điền đầy đủ thông tin!";}
     if ($username_duplicate || $email_duplicate) {
         $loi = "Tên người dùng hoặc email đã tồn tại trong hệ thống.";
     } else {

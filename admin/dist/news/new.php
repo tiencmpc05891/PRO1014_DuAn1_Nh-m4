@@ -160,6 +160,7 @@
                                 <th class="min-w-125px">Tiêu đề </th>
                                 <th class="min-w-125px">Nội dung</th>
                                 <th class="min-w-250px">Tác giả</th>
+                                
                                 <th class="min-w-125px">Ngày đăng bài</th>
                                 <th class="min-w-125px">Hành động</th>
 
