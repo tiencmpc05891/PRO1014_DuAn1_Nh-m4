@@ -59,7 +59,7 @@
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Trang</a>
                 <ul class="dropdown-menu">
-                <li class="nav-item" id="loginNavItem"><a class="nav-link" href="index.php?url=login"
+                  <li class="nav-item" id="loginNavItem"><a class="nav-link" href="index.php?url=login"
                       id="loginLink">Đăng nhập</a></li>
                   <li class="nav-item" id="registerNavItem"><a class="nav-link" href="index.php?url=register"
                       id="registerLink">Đăng ký</a></li>
@@ -70,20 +70,20 @@
               </li>
               <li class="nav-item"><a class="nav-link" href="index.php?url=contact">Liên hệ</a></li>
               <?php
-// Kiểm tra nếu người dùng đã đăng nhập và có vai trò là admin
-if (isset($_SESSION['admin_id']) && $_SESSION['admin_id'] !== "") {
-    echo '<li class="nav-item"><a class="nav-link" href="../admin/index.php">Đăng nhập Admin</a></li>';
-}
-?>
+              // Kiểm tra nếu người dùng đã đăng nhập và có vai trò là admin
+              if (isset($_SESSION['admin_id']) && $_SESSION['admin_id'] !== "") {
+                echo '<li class="nav-item"><a class="nav-link" href="../admin/index.php">Đăng nhập Admin</a></li>';
+              }
+              ?>
             </ul>
 
             <ul class="nav-shop">
               <li class="nav-item"><button><i class="ti-search"></i></button></li>
               <a href="index.php?url=cart">
-              <li class="nav-item"><button><i class="ti-shopping-cart"></i><span
-                    class="nav-shop__circle">3</span></button> </li>
+                <li class="nav-item"><button><i class="ti-shopping-cart"></i><span
+                      class="nav-shop__circle">3</span></button> </li>
               </a>
-      
+
               <li class="nav-item"><a class="button button-header" href="#">Mua ngay</a></li>
             </ul>
           </div>
@@ -92,7 +92,7 @@ if (isset($_SESSION['admin_id']) && $_SESSION['admin_id'] !== "") {
     </div>
   </header>
   <script>
-    var isLoggedIn = <?php echo isset ($_SESSION['user']) ? 'true' : 'false'; ?>;
+    var isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
     var loginNavItem = document.getElementById("loginNavItem");
     var registerNavItem = document.getElementById("registerNavItem");
 

@@ -196,7 +196,7 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 						<div class="comment_list">
 							<?php
 							// Lấy tất cả các bình luận của sản phẩm
-							$all_comments = $comments->get_all_comments($product_id);
+							$all_comments = $comments->get_comments($product_id);
 
 							// Kiểm tra nếu có bình luận
 							if ($all_comments) {
