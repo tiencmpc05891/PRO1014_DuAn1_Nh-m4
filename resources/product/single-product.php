@@ -410,116 +410,61 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 <!--================End Product Description Area =================-->
 
 <!--================ Start related Product area =================-->
-<section class="related-product-area">
+<section class="section-margin calc-60px">
 	<div class="container">
 		<div class="section-intro pb-60px">
-			<p>Phổ biến trên shop</p>
-			<h2>Top <span class="section-intro__style">Sản phẩm</span></h2>
+			<p>Sản phẩm bán chạy</p>
+			<h2>Trending <span class="section-intro__style">Product</span></h2>
 		</div>
-		<div class="row mt-30">
-			<div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-				<div class="single-search-product-wrapper">
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
+		<div class="row">
+			<?php foreach ($sp_cung_loai as $spcl): ?>
+				<?php
+				extract($spcl);
+				$linksp = "index.php?url=single-product&product_id=" . $spcl['product_id'];
+				$img = '../../public/uploads/images/' . $img;
+				$product_id = $spcl['product_id'];
+				?>
+				<div class="col-md-6 col-lg-4">
+					<div class="card text-center card-product">
+						<div class="card-product__img">
+							<a href="<?= $linksp ?>">
+								<img class="card-img" src="<?= $img ?>">
+							</a>
+							<ul class="card-product__imgOverlay">
+								<a href="<?= $linksp ?>">
+									<li><button><i class="ti-search"></i></button></li>
+								</a>
+								<li><button><i class="ti-shopping-cart"></i></button></li>
+								<li><button><i class="ti-heart"></i></button></li>
+							</ul>
 						</div>
-					</div>
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
+						<div class="card-body">
+							<p>
+								<?= $product_name ?>
+							</p>
+							<h4 class="card-product__title"><a href="<?= $linksp ?>">
+									<?= $product_name ?>
+								</a></h4>
+							<p class="card-product__price">
+								<?= number_format($price, 0, '.', '.'); ?><sup>đ</sup>
+							</p>
+							<form action="index.php?url=addcart" method="post">
+								<!-- nữa làm giỏ hàng -->
+								<input type="hidden" name="cart_id" value="<?= $cart_id ?>">
+								<input type="hidden" name="product_name"
+									value="<?= isset($product_name) ? $product_name : '' ?>">
+								<input type="hidden" name="img" value="<?= isset($img) ? $img : '' ?>">
+								<input type="hidden" name="price" value="<?= isset($price) ? $price : '' ?>">
+								<input type="hidden" name="quantity" value="1">
+								<input type="hidden" name="product_id" value="<?= isset($product_id) ? $product_id : '' ?>">
+								<input class="btn btn-primary add-to-cart-btn" type="submit" name="addcart"
+									value="Thêm vào giỏ hàng">
+							</form>
 						</div>
 					</div>
 				</div>
-			</div>
+			<?php endforeach; ?>
 
-			<div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-				<div class="single-search-product-wrapper">
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-				<div class="single-search-product-wrapper">
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
-				<div class="single-search-product-wrapper">
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-					<div class="single-search-product d-flex">
-						<a href="#"><img src="public/img/product/product2/ro.webp" alt=""></a>
-						<div class="desc">
-							<a href="#" class="title">Rượu vang đỏ</a>
-							<div class="price">999.000đ</div>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 </section>

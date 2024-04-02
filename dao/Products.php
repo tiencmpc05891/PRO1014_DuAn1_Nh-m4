@@ -43,14 +43,14 @@ class Products
 
     public function loadall_sanpham_home()
     {
-        $sql = "SELECT * FROM products ORDER BY product_id DESC LIMIT 0,3";
+        $sql = "SELECT * FROM products ORDER BY product_id DESC LIMIT 0,4";
         $listsanpham = $this->database->pdo_query($sql);
         return $listsanpham;
     }
 
     public function loadall_sanpham_home_small()
     {
-        $sql = "SELECT * FROM products ORDER BY product_id ASC LIMIT 0,3";
+        $sql = "SELECT * FROM products ORDER BY product_id ASC LIMIT 0,4";
         $listsanpham = $this->database->pdo_query($sql);
         return $listsanpham;
     }
