@@ -1,4 +1,5 @@
 <?php
+
 namespace dao;
 
 use Exception;
@@ -18,7 +19,6 @@ class Products
         $sql = "INSERT INTO products (product_name, price, img, description, stock_quantity, category_id) VALUES (?, ?, ?, ?, ?, ?)";
         $params = array($product_name, $price, $img, $description, $stock_quantity, $category_id);
         $this->database->pdo_execute($sql, $params);
-
     }
 
     public function getproduct_id($product_name)
@@ -27,7 +27,7 @@ class Products
         $params = array($product_name);
         $result = $this->database->pdo_query_one($sql, $params);
 
-        if ($result && isset ($result['product_id'])) {
+        if ($result && isset($result['product_id'])) {
             return $result['product_id'];
         } else {
             return null;
@@ -61,7 +61,6 @@ class Products
         $params = array($product_id);
         $sp = $this->database->pdo_query_one($sql, $params);
         return $sp;
-
     }
 
     public function load_sanpham_cungloai($product_id, $category_id)
@@ -74,7 +73,7 @@ class Products
 
     public function update_sanpham($product_id, $category_id, $product_name, $price, $description, $stock_quantity, $img)
     {
-        if (isset ($_POST['product_id'])) {
+        if (isset($_POST['product_id'])) {
             $product_id = $_POST['product_id'];
 
             if ($img != "") {
@@ -112,7 +111,7 @@ class Products
             $sql = "SELECT * FROM categories WHERE category_id=?";
             $params = array($category_id);
             $dm = $this->database->pdo_query_one($sql, $params);
-            if ($dm && isset ($dm['name'])) {
+            if ($dm && isset($dm['name'])) {
                 return $dm['name'];
             }
         }
