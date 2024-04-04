@@ -19,7 +19,27 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 
 
 ?>
+<style>
+	/* CSS */
+	.star-rating {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
 
+	.star {
+		display: inline-block;
+		font-size: 24px;
+		color: #ddd;
+		/* Màu trắng mặc định */
+		cursor: pointer;
+	}
+
+	.star.selected {
+		color: gold;
+		/* Màu vàng cho các ô đã chọn */
+	}
+</style>
 <!-- ================ start banner area ================= -->
 <section class="blog-banner-area" id="blog">
 	<div class="container h-100">
@@ -118,7 +138,7 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 			</li>
 			<li class="nav-item">
 				<a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab"
-					aria-controls="review" aria-selected="false">Reviews</a>
+					aria-controls="review" aria-selected="false">Đánh giá</a>
 			</li>
 		</ul>
 		<div class="tab-content" id="myTabContent">
@@ -242,30 +262,24 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 						<div class="review_box">
 							<h4>Bình luận</h4>
 							<form class="row contact_form" action="index.php?url=comments" method="post"
-								id="contactForm" novalidate="novalidate">
+								id="commentForm" novalidate="novalidate">
 								<div class="col-md-12">
 									<div class="form-group">
 										<input type="hidden" name="customer_id"
-
-											value="<?php echo isset ($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; ?>">
-
-											<input type="hidden" name="customer_id" value="<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : (isset($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''); ?>">
-
-
+											value="<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; ?>">
+										<input type="hidden" name="customer_id"
+											value="<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : (isset($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''); ?>">
 										<input type="hidden" name="product_id"
 											value="<?php echo isset($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">
-
-										<input type="text" class="form-control"  name="comment"
+										<input type="text" class="form-control" name="comment"
 											placeholder="Nhập bình luận">
 									</div>
 								</div>
-
-
-
 								<div class="col-md-12 text-right">
 									<button type="submit" value="submit" class="btn primary-btn">Gửi</button>
 								</div>
 							</form>
+
 						</div>
 					</div>
 				</div>
@@ -273,135 +287,120 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 			<div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
 				<div class="row">
 					<div class="col-lg-6">
+						<?php
+						$all_ratings = $ratings->get_rating($product_id);
+						$rating_stats = $ratings->calculateRatingStats($all_ratings);
+						?>
 						<div class="row total_rate">
 							<div class="col-6">
 								<div class="box_total">
-									<h5>Overall</h5>
-									<h4>4.0</h4>
-									<h6>(03 Reviews)</h6>
+									<h5>Tổng</h5>
+									<h4>
+										<?php echo $rating_stats['average_rating']; ?>
+									</h4>
+									<h6>(
+										<?php echo $rating_stats['total_reviews']; ?> Đánh giá)
+									</h6>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="rating_list">
-									<h3>Based on 3 Reviews</h3>
+									<h3>Dựa trên
+										<?php echo $rating_stats['total_reviews']; ?> đánh giá
+									</h3>
 									<ul class="list">
-										<li><a href="#">5 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i> 01</a></li>
-										<li><a href="#">4 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i> 01</a></li>
-										<li><a href="#">3 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i> 01</a></li>
-										<li><a href="#">2 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i> 01</a></li>
-										<li><a href="#">1 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i><i class="fa fa-star"></i><i
-													class="fa fa-star"></i> 01</a></li>
+										<?php foreach ($rating_stats['rating_counts'] as $rating_value => $count): ?>
+											<li>
+												<a href="#">
+													<?php echo $rating_value; ?> Sao
+													<?php for ($i = 0; $i < $rating_value; $i++): ?>
+														<i class="fa fa-star"></i>
+													<?php endfor; ?>
+													<?php echo $count; ?>
+												</a>
+											</li>
+										<?php endforeach; ?>
 									</ul>
 								</div>
 							</div>
 						</div>
-						<div class="review_list">
-							<div class="review_item">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-1.png" alt="">
-									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-									</div>
-								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-									laboris nisi ut aliquip ex ea
-									commodo</p>
-							</div>
-							<div class="review_item">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-2.png" alt="">
-									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-									</div>
-								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-									laboris nisi ut aliquip ex ea
-									commodo</p>
-							</div>
-							<div class="review_item">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-3.png" alt="">
-									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
+						<?php
+						$all_ratings = $ratings->get_rating($product_id);
+						if ($all_ratings) {
+							foreach ($all_ratings as $rating) {
+								$namerating = $ratings->get_name_by_id($rating['customer_id']);
+
+								// Tính toán số sao dựa trên đánh giá
+								$rating_value = $rating['rating'];
+								$stars_html = '';
+								for ($i = 0; $i < $rating_value; $i++) {
+									$stars_html .= '<i class="fa fa-star"></i>';
+								}
+
+								?>
+								<div class="review_list">
+									<div class="review_item">
+										<div class="media">
+											<div class="d-flex">
+												<img src="public/img/5e67fa0bcd0230fb933e9c7a6169e953.jpg" alt="User Avatar"
+													width="40px">
+											</div>
+											<div class="media-body">
+												<h4>
+													<?php echo $namerating['customer_name']; ?>
+												</h4>
+												<!-- Hiển thị số sao -->
+												<?php echo $stars_html; ?>
+											</div>
+										</div>
+										<p>
+											<?php echo $rating['review']; ?>
+										</p>
 									</div>
 								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-									incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-									laboris nisi ut aliquip ex ea
-									commodo</p>
-							</div>
-						</div>
+								<?php
+							}
+						} else {
+							// Hiển thị thông báo nếu không có bình luận
+							echo "<p>Không có đánh giá nào cho sản phẩm này.</p>";
+						}
+						?>
+
 					</div>
 					<div class="col-lg-6">
 						<div class="review_box">
-							<h4>Add a Review</h4>
-							<p>Your Rating:</p>
-							<ul class="list">
-								<li><a href="#"><i class="fa fa-star"></i></a></li>
-								<li><a href="#"><i class="fa fa-star"></i></a></li>
-								<li><a href="#"><i class="fa fa-star"></i></a></li>
-								<li><a href="#"><i class="fa fa-star"></i></a></li>
-								<li><a href="#"><i class="fa fa-star"></i></a></li>
+							<h4>Thêm đánh giá</h4>
+							<p>Đánh giá của bạn:</p>
+							<!-- HTML -->
+							<ul class="star-rating">
+								<li class="star" data-rating="1">&#9733;</li>
+								<li class="star" data-rating="2">&#9733;</li>
+								<li class="star" data-rating="3">&#9733;</li>
+								<li class="star" data-rating="4">&#9733;</li>
+								<li class="star" data-rating="5">&#9733;</li>
 							</ul>
-							<p>Outstanding</p>
-							<form action="#/" class="form-contact form-review mt-3">
+
+							<p id="ratingText">Số sao:</p>
+							<form action="index.php?url=ratings" method="post" class="form-contact form-review mt-3">
+								<input type="hidden" id="rating" name="rating" value="0">
+								<input type="hidden" name="customer_id"
+									value="<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; ?>">
+
+								<input type="hidden" name="customer_id"
+									value="<?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : (isset($_SESSION['user']['customer_id']) ? $_SESSION['user']['customer_id'] : ''); ?>">
+								<input type="hidden" name="product_id"
+									value="<?php echo isset($_REQUEST['product_id']) ? $_REQUEST['product_id'] : ''; ?>">
 								<div class="form-group">
-									<input class="form-control" name="name" type="text" placeholder="Enter your name"
-										required>
-								</div>
-								<div class="form-group">
-									<input class="form-control" name="email" type="email"
-										placeholder="Enter email address" required>
-								</div>
-								<div class="form-group">
-									<input class="form-control" name="subject" type="text" placeholder="Enter Subject">
-								</div>
-								<div class="form-group">
-									<textarea class="form-control different-control w-100" name="textarea" id="textarea"
-										cols="30" rows="5" placeholder="Enter Message"></textarea>
+									<textarea class="form-control different-control w-100" name="review" id="review"
+										cols="30" rows="5" placeholder="Nhập đánh giá"></textarea>
 								</div>
 								<div class="form-group text-center text-md-right mt-3">
-									<button type="submit" class="button button--active button-review">Submit
-										Now</button>
+									<button type="submit" class="button button--active button-review">Gửi</button>
 								</div>
 							</form>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -469,50 +468,84 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 	</div>
 </section>
 <!--================ end related Product area =================-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-	document.getElementById("contactForm").addEventListener("submit", function (event) {
-		// Ngăn chặn hành vi mặc định của form (tải lại trang)
-		event.preventDefault();
 
-		// Kiểm tra trạng thái đăng nhập
-		var loggedIn = checkLoginStatus();
+	// Định nghĩa hàm setRating trước khi sử dụng nó
+	function setRating(rating) {
+		var stars = document.getElementsByClassName('star');
+		var ratingInput = document.getElementById('rating');
+		ratingInput.value = rating;
 
-		if (loggedIn) {
-			sendAjaxRequest();
-		} else {
-			localStorage.setItem("currentTab", "contact");
-			alert("Vui lòng đăng nhập để bình luận.");
+		for (var i = 0; i < stars.length; i++) {
+			if (i < rating) {
+				stars[i].classList.add('selected'); // Thêm lớp selected cho các ô đã chọn
+			} else {
+				stars[i].classList.remove('selected'); // Loại bỏ lớp selected cho các ô không được chọn
+			}
 		}
+	}
+
+	$(document).ready(function () {
+		$('.star-rating .star').click(function () {
+			var rating = $(this).attr('data-rating');
+			$('#rating').val(rating);
+			$('#ratingText').text('Số sao: ' + rating);
+			// Tô màu các ngôi sao
+			setRating(rating);
+		});
+
+		$('.form-review').submit(function (event) {
+			event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+			// Gửi dữ liệu form qua AJAX
+			$.ajax({
+				type: $(this).attr('method'),
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				success: function (response) {
+					console.log(response);
+					location.reload();
+				},
+				error: function (xhr, status, error) {
+					console.error('There was an error!', error);
+				}
+			});
+		});
 	});
 
-	function checkLoginStatus() {
-		return <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
-	}
 
-	function sendAjaxRequest() {
+	$(document).ready(function () {
+    $('#commentForm').submit(function (event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của form
 
-		var formData = new FormData(document.getElementById("contactForm"));
+        // Kiểm tra người dùng đã đăng nhập hay chưa
+        var loggedIn = checkLoginStatus();
 
-		// Gửi yêu cầu AJAX đến máy chủ
-		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "index.php?url=comments", true);
-		xhr.onload = function () {
-			if (xhr.status === 200) {
-				console.log(xhr.responseText);
-				window.location.reload();
-			} else {
-				console.error("Lỗi khi gửi yêu cầu AJAX: " + xhr.status);
-			}
-		};
-		xhr.send(formData);
-	}
+        if (loggedIn) {
+            // Nếu người dùng đã đăng nhập, thực hiện gửi dữ liệu form qua AJAX
+            $.ajax({
+                type: $(this).attr('method'),
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (response) {
+                    // Xử lý phản hồi từ máy chủ (nếu cần)
+                    console.log(response);
+					location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('There was an error!', error);
+                }
+            });
+        } else {
+            alert("Vui lòng đăng nhập để bình luận.");
+        }
+    });
+});
 
-	window.onload = function () {
-		var currentTab = localStorage.getItem("currentTab");
-		if (currentTab === "contact") {
-			document.getElementById("contact-tab").click();
-		}
-	};
+function checkLoginStatus() {
+    return <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
+}
 
 
 </script>

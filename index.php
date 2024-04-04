@@ -15,6 +15,7 @@ use dao\Categorys;
 use dao\Users;
 use dao\Comments;
 use dao\Cart;
+use dao\Ratings;
 
 $database = new Connect();
 $danhmuc = new Categorys();
@@ -22,7 +23,7 @@ $sanpham = new Products();
 $users = new Users();
 $comments = new Comments();
 $cart = new Cart;
-
+$ratings = new Ratings();
 
 if (!isset($_SESSION['mycart']))
     $_SESSION['mycart'] = [];
@@ -225,6 +226,38 @@ if (isset($_GET['url'])) {
 
             include "resources/users/reset_password.php";
             break;
+            case 'ratings':
+                {
+                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                        // Lấy dữ liệu từ form
+                        $customer_id = isset($_POST['customer_id']) ? $_POST['customer_id'] : null;
+                        $product_id = isset($_POST['product_id']) ? $_POST['product_id'] : null;
+                        $rating_date = date('Y-m-d');
+                        $rating = isset($_POST['rating']) ? $_POST['rating'] : null;
+                        $review = isset($_POST['review']) ? $_POST['review'] : null;
+        
+                        if (empty($rating)) {
+                            $error = "Bình luận không được để trống!";
+                        } else {
+                            if (isset($_SESSION['user'])) {
+                                
+                                $ratings->insert_rating($product_id, $customer_id, $rating_date, $rating, $review);
+                                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                                $ngay_gio_hien_tai = date('Y-m-d H:i:s');
+                                $ratings->update_rating_date($ngay_gio_hien_tai);
+                                header("Location: index.php?url=ratings&product_id=" . $product_id);
+                                exit();
+                            } else {
+                                
+                                echo "<script>";
+                                echo "alert('Vui lòng đăng nhập để bình luận.');";
+                                echo "</script>";
+                            }
+                        }
+                    }
+                }
+                include 'resources/product/single-product.php';
+                break;
         case 'logout':
             session_unset();
             session_destroy();
