@@ -183,33 +183,33 @@ if (isset($_GET['url'])) {
             include 'resources/users/editprofile.php';
             break;
 
-        case 'comments':
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                // Lấy dữ liệu từ form
-                $customer_id = isset($_POST['customer_id']) ? $_POST['customer_id'] : null;
-                $product_id = isset($_POST['product_id']) ? $_POST['product_id'] : null;
-                $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
-                $comment_date = date('Y-m-d');
-
-                if (empty($comment)) {
-                    $error = "Bình luận không được để trống!";
-                } else {
-                    if (isset($_SESSION['user'])) {
-                        // Nếu người dùng đã đăng nhập, thêm bình luận vào cơ sở dữ liệu
-                        $comments->insert_comment($product_id, $customer_id, $comment, $comment_date);
-                        date_default_timezone_set('Asia/Ho_Chi_Minh');
-                        $ngay_gio_hien_tai = date('Y-m-d H:i:s');
-                        $comments->update_comment_date($ngay_gio_hien_tai);
-                        header("Location: index.php?url=comments&product_id=" . $product_id);
-                        exit();
+            case 'comments':
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    // Lấy dữ liệu từ form
+                    $customer_id = isset($_POST['customer_id']) ? $_POST['customer_id'] : null;
+                    $product_id = isset($_POST['product_id']) ? $_POST['product_id'] : null;
+                    $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
+                    $comment_date = date('Y-m-d');
+    
+                    if (empty($comment)) {
+                        $error = "Bình luận không được để trống!";
                     } else {
-                        // Nếu người dùng chưa đăng nhập, hiển thị thông báo cảnh báo bằng mã JavaScript
-                        echo "<script>";
-                        echo "alert('Vui lòng đăng nhập để bình luận.');";
-                        echo "</script>";
+                        if (isset($_SESSION['user'])) {
+                            // Nếu người dùng đã đăng nhập, thêm bình luận vào cơ sở dữ liệu
+                            $comments->insert_comment($product_id, $customer_id, $comment, $comment_date);
+                            date_default_timezone_set('Asia/Ho_Chi_Minh');
+                            $ngay_gio_hien_tai = date('Y-m-d H:i:s');
+                            $comments->update_comment_date($ngay_gio_hien_tai);
+                            header("Location: index.php?url=comments&product_id=" . $product_id);
+                            exit();
+                        } else {
+                            // Nếu người dùng chưa đăng nhập, hiển thị thông báo cảnh báo bằng mã JavaScript
+                            echo "<script>";
+                            echo "alert('Vui lòng đăng nhập để bình luận.');";
+                            echo "</script>";
+                        }
                     }
                 }
-            }
 
             include 'resources/product/single-product.php';
             break;
@@ -237,8 +237,9 @@ if (isset($_GET['url'])) {
                         $review = isset($_POST['review']) ? $_POST['review'] : null;
         
                         if (empty($rating)) {
-                            $error = "Bình luận không được để trống!";
-                        } else {
+                            $error = "Đánh giá hoặc bình luận không được để trống!";
+                        }
+                         else {
                             if (isset($_SESSION['user'])) {
                                 
                                 $ratings->insert_rating($product_id, $customer_id, $rating_date, $rating, $review);

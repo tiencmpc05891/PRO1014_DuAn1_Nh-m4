@@ -398,6 +398,8 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 									<button type="submit" class="button button--active button-review">Gửi</button>
 								</div>
 							</form>
+
+
 						</div>
 					</div>
 
@@ -491,14 +493,24 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 			var rating = $(this).attr('data-rating');
 			$('#rating').val(rating);
 			$('#ratingText').text('Số sao: ' + rating);
-			// Tô màu các ngôi sao
+
 			setRating(rating);
 		});
 
+		// Xử lý sự kiện khi submit form đánh giá
 		$('.form-review').submit(function (event) {
-			event.preventDefault(); // Ngăn chặn hành động mặc định của form
+			event.preventDefault();
 
-			// Gửi dữ liệu form qua AJAX
+			var rating = $('#rating').val();
+			var review = $('#review').val();
+
+			console.log('Rating:', rating);
+			console.log('Review:', review);
+
+			if (rating === '0') {
+				alert('Vui lòng nhập đánh giá.');
+				return;
+			}
 			$.ajax({
 				type: $(this).attr('method'),
 				url: $(this).attr('action'),
@@ -512,40 +524,37 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 				}
 			});
 		});
+
+	});
+	
+	//xử lý bình luận
+	$(document).ready(function () {
+		$('#commentForm').submit(function (event) {
+			event.preventDefault();
+			var loggedIn = checkLoginStatus();
+
+			if (loggedIn) {
+				$.ajax({
+					type: $(this).attr('method'),
+					url: $(this).attr('action'),
+					data: $(this).serialize(),
+					success: function (response) {
+						console.log(response);
+						location.reload();
+					},
+					error: function (xhr, status, error) {
+						console.error('There was an error!', error);
+					}
+				});
+			} else {
+				alert("Vui lòng đăng nhập để bình luận.");
+			}
+		});
 	});
 
-
-	$(document).ready(function () {
-    $('#commentForm').submit(function (event) {
-        event.preventDefault(); // Ngăn chặn hành động mặc định của form
-
-        // Kiểm tra người dùng đã đăng nhập hay chưa
-        var loggedIn = checkLoginStatus();
-
-        if (loggedIn) {
-            // Nếu người dùng đã đăng nhập, thực hiện gửi dữ liệu form qua AJAX
-            $.ajax({
-                type: $(this).attr('method'),
-                url: $(this).attr('action'),
-                data: $(this).serialize(),
-                success: function (response) {
-                    // Xử lý phản hồi từ máy chủ (nếu cần)
-                    console.log(response);
-					location.reload();
-                },
-                error: function (xhr, status, error) {
-                    console.error('There was an error!', error);
-                }
-            });
-        } else {
-            alert("Vui lòng đăng nhập để bình luận.");
-        }
-    });
-});
-
-function checkLoginStatus() {
-    return <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
-}
+	function checkLoginStatus() {
+		return <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;
+	}
 
 
 </script>
