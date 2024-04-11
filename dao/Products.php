@@ -27,7 +27,7 @@ class Products
         $params = array($product_name);
         $result = $this->database->pdo_query_one($sql, $params);
 
-        if ($result && isset ($result['product_id'])) {
+        if ($result && isset($result['product_id'])) {
             return $result['product_id'];
         } else {
             return null;
@@ -74,7 +74,7 @@ class Products
 
     public function update_sanpham($product_id, $category_id, $product_name, $price, $description, $stock_quantity, $img)
     {
-        if (isset ($_POST['product_id'])) {
+        if (isset($_POST['product_id'])) {
             $product_id = $_POST['product_id'];
 
             if ($img != "") {
@@ -93,8 +93,8 @@ class Products
     {
         $sql = "SELECT p.*, c.category_name FROM products p LEFT JOIN categories c ON p.category_id = c.category_id WHERE 1";
         $params = array();
-        if ($kyw != "") {
-            $sql .= " AND p.name LIKE ?";
+        if (!empty($kyw)) {
+            $sql .= " AND p.product_name LIKE ?";
             $params[] = "%" . $kyw . "%";
         }
         if ($category_id > 0) {
@@ -106,13 +106,14 @@ class Products
         return $listsanpham;
     }
 
+
     public function load_ten_dm($category_id)
     {
         if ($category_id > 0) {
             $sql = "SELECT * FROM categories WHERE category_id=?";
             $params = array($category_id);
             $dm = $this->database->pdo_query_one($sql, $params);
-            if ($dm && isset ($dm['name'])) {
+            if ($dm && isset($dm['name'])) {
                 return $dm['name'];
             }
         }

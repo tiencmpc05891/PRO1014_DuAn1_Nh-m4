@@ -36,6 +36,8 @@
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
               <li class="nav-item active"><a class="nav-link" href="index.php?url=home">Trang chủ </a></li>
+
+
               <li class="nav-item submenu dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false">Sản phẩm</a>
@@ -90,6 +92,9 @@
         </div>
       </nav>
     </div>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger intent="WELCOME" chat-title="WineShop" agent-id="b917abd3-7225-4208-b15e-696f70637175"
+      language-code="en"></df-messenger>
   </header>
   <script>
     var isLoggedIn = <?php echo isset($_SESSION['user']) ? 'true' : 'false'; ?>;

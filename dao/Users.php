@@ -13,13 +13,20 @@ class Users
         $this->database = new Connect();
     }
 
+    
     public function insert_nguoidung($customer_name, $email, $password)
     {
         $sql = "INSERT INTO customers (customer_name, email, password) VALUES (?, ?, ?)";
         $params = array($customer_name, $email, $password);
         $this->database->pdo_execute($sql, $params);
     }
-
+    public function insert_google($customer_name, $email)
+    {
+        $sql = "INSERT INTO customers (customer_name, email) VALUES (?, ?)";
+        $params = array($customer_name, $email);
+        $this->database->pdo_execute($sql, $params);
+    }
+    
     public function sign_in($email)
     {
 
@@ -95,6 +102,10 @@ class Users
         $result = $this->database->pdo_query($sql, $params);
         return $result;
     }
+    
+
+
+
 }
 
    

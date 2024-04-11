@@ -15,22 +15,19 @@ use dao\Connect;
 use dao\Categorys;
 use dao\Comments;
 use dao\Blog;
-
 use dao\Users;
 use dao\Admin;
-
 use dao\Cart;
-
+use dao\Contacts;
 
 $database = new Connect();
 $danhmuc = new Categorys;
 $sanpham = new Products;
 $comment = new Comments();
 $blog = new Blog();
-
+$contacts = new Contacts;
 $user = new Users();
 $admin = new Admin();
-
 $cart = new Cart;
 
 if (isset($_GET['url']) && ($_GET['url'] != "")) {
@@ -277,6 +274,10 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             $listuser = $user->get_all_user();
             include 'dist/user/user.php';
             break;
+            case 'contact':
+                $listcontact = $contacts->get_all_contact();
+                include 'dist/contact/listcontact.php';
+                break;
         case 'admin':
             $listadmin = $admin->get_all_admin();
             include 'dist/admin/admin.php';

@@ -401,4 +401,12 @@ class Cart
                 return "Đơn hàng mới";
         }
     }
+    public function checkIfPurchased($customer_id, $product_id)
+{
+    $sql = "SELECT COUNT(*) as total FROM orders WHERE customer_id = ? AND product_id = ?";
+    $params = array($customer_id, $product_id);
+    $result = $this->database->pdo_query_one($sql, $params);
+
+    return $result['total'] > 0;
+}
 }

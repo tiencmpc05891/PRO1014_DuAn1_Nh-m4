@@ -1,17 +1,20 @@
 <!-- file category sản phẩm -->
 <?php
 $dsdm = $danhmuc->loadall_danhmuc();
-if (!isset ($_SESSION['mycart']))
+if (!isset($_SESSION['mycart']))
   $_SESSION['mycart'] = [];
-if (isset ($_POST['kyw']) && ($_POST['kyw'] != "")) {
+// Xử lý dữ liệu tìm kiếm
+if (isset($_POST['kyw']) && $_POST['kyw'] !== '') {
   $kyw = $_POST['kyw'];
+} elseif (isset($_GET['kyw']) && $_GET['kyw'] !== '') {
+  $kyw = $_GET['kyw'];
 } else {
-  $kyw = "";
+  $kyw = ''; // Giá trị mặc định khi không có dữ liệu tìm kiếm
 }
 
 //tìm kiếm sản phẩm
 
-if (isset ($_POST['category_id']) && ($_POST['category_id'] > 0)) {
+if (isset($_POST['category_id']) && ($_POST['category_id'] > 0)) {
   $category_id = $_POST['category_id'];
 } else {
   $category_id = 0;
@@ -19,18 +22,20 @@ if (isset ($_POST['category_id']) && ($_POST['category_id'] > 0)) {
 }
 $html_dm = $danhmuc->showdm($dsdm);
 
-if (isset ($titlepage) && $titlepage != "") {
+if (isset($titlepage) && $titlepage != "") {
   $title = $titlepage;
 } else {
   $title = "Sản Phẩm";
 }
 
-$category_id = isset ($_GET['category_id']) ? $_GET['category_id'] : 0;
+$category_id = isset($_GET['category_id']) ? $_GET['category_id'] : 0;
 $dssp = $sanpham->loadall_sanpham($kyw, $category_id);
 
 // $page = isset($_GET['page']) ? $_GET['page'] : 1;
 
 $tendm = $sanpham->load_ten_dm($category_id);
+
+
 ?>
 
 
@@ -129,69 +134,74 @@ $tendm = $sanpham->load_ten_dm($category_id);
             </select>
           </div>
           <div>
-            <div class="input-group filter-bar-search">
-              <input type="text" placeholder="Search">
-              <div class="input-group-append">
-                <button type="button"><i class="ti-search"></i></button>
+            <form method="GET" action="">
+              <div class="input-group filter-bar-search">
+                <input type="hidden" name="url" value="category">
+                <input type="text" placeholder="Search" name="kyw"
+                  value="<?= isset($_GET['kyw']) ? $_GET['kyw'] : '' ?>">
+                <div class="input-group-append">
+                  <button type="submit"><i class="ti-search"></i></button>
+                </div>
               </div>
-            </div>
+            </form>
+
           </div>
         </div>
         <!-- End Filter Bar -->
         <!-- Start Best Seller -->
+        <!-- Start Best Seller -->
         <section class="lattest-product-area pb-40 category-list">
           <div class="container">
             <div class="row">
-              <?php foreach ($dssp as $index => $sp): ?>
-                <?php
-                extract($sp);
-                $linksp = "index.php?url=single-product&product_id=" . $sp['product_id'];
-                $img = '../../public/uploads/images/' . $img;
-                $product_id = $sp['product_id'];
-                ?>
-                <div class="col-md-6 col-lg-4">
-                  <div class="card text-center card-product">
-                    <div class="card-product__img">
-                      <a href="<?= $linksp ?>">
-                        <img class="card-img" src="<?= $img ?>">
-                      </a>
-                      <ul class="card-product__imgOverlay">
-                        <a href="<?= $linksp ?>">
-                          <li><button><i class="ti-search"></i></button></li>
-                        </a>
-                        <li><button><i class="ti-shopping-cart"></i></button></li>
-                        <li><button><i class="ti-heart"></i></button></li>
-                      </ul>
-                    </div>
-                    <div class="card-body">
-                      <p>
-                        <?= $product_name ?>
-                      </p>
-                      <h4 class="card-product__title"><a href="<?= $linksp ?>">
-                          <?= $product_name ?>
-                        </a></h4>
-                      <p class="card-product__price">
-                        <?= number_format($price, 0, '.', '.'); ?><sup>đ</sup>
-                      </p>
-                      <form action="index.php?url=addcart" method="post">
-                        <!-- nữa làm giỏ hàng -->
-                        <input type="hidden" name="cart_id" value="<?= $cart_id ?>">
-                        <input type="hidden" name="product_name"
-                          value="<?= isset($product_name) ? $product_name : '' ?>">
-                        <input type="hidden" name="img" value="<?= isset($img) ? $img : '' ?>">
-                        <input type="hidden" name="price" value="<?= isset($price) ? $price : '' ?>">
-                        <input type="hidden" name="quantity" value="1">
-                        <input type="hidden" name="product_id" value="<?= isset($product_id) ? $product_id : '' ?>">
-                        <input class="btn btn-primary add-to-cart-btn" type="submit" name="addcart"
-                          value="Thêm vào giỏ hàng">
-                      </form>
-                    </div>
+              <?php if (empty($dssp)): ?>
+                <div class="col-12">
+                  <div class="alert alert-warning" role="alert">
+                    Không có sản phẩm nào khớp với yêu cầu tìm kiếm của bạn.
                   </div>
                 </div>
-              <?php endforeach; ?>
+              <?php else: ?>
+                <?php foreach ($dssp as $index => $sp): ?>
+                  <?php
+                  extract($sp);
+                  $linksp = "index.php?url=single-product&product_id=" . $sp['product_id'];
+                  $img = '../../public/uploads/images/' . $img;
+                  $product_id = $sp['product_id'];
+                  ?>
+                  <div class="col-md-6 col-lg-4">
+                    <div class="card text-center card-product">
+                      <div class="card-product__img">
+                        <a href="<?= $linksp ?>">
+                          <img class="card-img" src="<?= $img ?>" alt="<?= $product_name ?>">
+                        </a>
+                        <ul class="card-product__imgOverlay">
+                          <li><a href="<?= $linksp ?>"><button><i class="ti-search"></i></button></a></li>
+                          <li>
+                            <form action="index.php?url=addcart" method="post">
+                              <input type="hidden" name="cart_id" value="<?= $cart_id ?>">
+                              <input type="hidden" name="product_name" value="<?= $product_name ?>">
+                              <input type="hidden" name="img" value="<?= $img ?>">
+                              <input type="hidden" name="price" value="<?= $price ?>">
+                              <input type="hidden" name="quantity" value="1">
+                              <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                              <button type="submit"><i class="ti-shopping-cart"></i></button>
+                            </form>
+                          </li>
+                          <li><button><i class="ti-heart"></i></button></li>
+                        </ul>
+                      </div>
+                      <div class="card-body">
+                        <p><?= $product_name ?></p>
+                        <h4 class="card-product__title"><a href="<?= $linksp ?>"><?= $product_name ?></a></h4>
+                        <p class="card-product__price"><?= number_format($price, 0, '.', '.'); ?><sup>đ</sup></p>
+                      </div>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              <?php endif; ?>
             </div>
           </div>
         </section>
+        <!-- End Best Seller -->
 
       </div>
     </div>
@@ -351,3 +361,12 @@ $tendm = $sanpham->load_ten_dm($category_id);
     </div>
   </div>
 </section>
+<script>
+  function updateURL(event) {
+    event.preventDefault(); // Ngăn chặn chuyển hướng mặc định của form
+    const searchValue = document.getElementById('searchInput').value;
+    const newUrl = window.location.origin + window.location.pathname + '?kyw=' + encodeURIComponent(searchValue);
+    window.history.replaceState({ path: newUrl }, '', newUrl); // Cập nhật URL không chuyển hướng trang
+    document.getElementById('searchForm').submit(); // Gửi form sau khi đã cập nhật URL
+  }
+</script>
