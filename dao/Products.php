@@ -1,4 +1,5 @@
 <?php
+
 namespace dao;
 
 use Exception;
@@ -18,7 +19,6 @@ class Products
         $sql = "INSERT INTO products (product_name, price, img, description, stock_quantity, category_id) VALUES (?, ?, ?, ?, ?, ?)";
         $params = array($product_name, $price, $img, $description, $stock_quantity, $category_id);
         $this->database->pdo_execute($sql, $params);
-
     }
 
     public function getproduct_id($product_name)
@@ -61,7 +61,6 @@ class Products
         $params = array($product_id);
         $sp = $this->database->pdo_query_one($sql, $params);
         return $sp;
-
     }
 
     public function load_sanpham_cungloai($product_id, $category_id)
