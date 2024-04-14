@@ -63,12 +63,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="col-md-12 form-group">
                             <input type="password" class="form-control" id="password" name="password"
-                                placeholder="Password" required>
+                                placeholder="Mật khẩu" required>
                         </div>
                         <div class="col-md-12 form-group">
                             <button type="submit" value="submit" class="button button-login w-100">Đăng nhập</button>
                         </div>
-                        <div class="g-recaptcha" data-sitekey="6LcT3LQpAAAAAIhMydn4HWV1wbvy965o85whFaDk"></div>
+                        <div class="col-md-12">
+                            <div class="g-recaptcha col-md-12 form-group"
+                                data-sitekey="6LcT3LQpAAAAAIhMydn4HWV1wbvy965o85whFaDk"></div>
+                        </div>
 
                         <?php if (isset($error)): ?>
                             <div class="col-md-12 form-group">
@@ -77,14 +80,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </p>
                             </div>
                         <?php endif; ?>
-                        Quên mật khẩu?&nbsp;<a href="index.php?url=forgotpassword">Lấy lại mật khẩu tại đây</a>
-                        <div class="col-md-12 mt-4 form-group">
+                        <div class="col-md-12 ">
+                            Quên mật khẩu?&nbsp;<a href="index.php?url=forgotpassword">Lấy lại mật khẩu tại đây</a>
+                        </div>
+                        
+                        <div class="col-md-12 mt-4 ms-4 form-group">
                             <a href="https://accounts.google.com/o/oauth2/auth?client_id=606727185499-4st803lcpbu7kaq87oo5e8or1lo17bpg.apps.googleusercontent.com&redirect_uri=http://localhost/PRO1014_DuAn1_Nhom4/&response_type=code&scope=email%20profile"
                                 class="button button-login w-100">
                                 <img src="public/img/instagram/google-logo-6278331_960_720.webp" width="30px"
                                     alt="Google icon">
                                 Đăng nhập bằng Google
                             </a>
+
                         </div>
 
                     </form>

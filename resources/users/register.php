@@ -1,28 +1,35 @@
 <?php
+$loi = $thongbao = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$customer_name = $_POST['customer_name'];
-	$email = $_POST['email'];
-	$password = $_POST['password'];
-
-	// Validate mật khẩu
-	if (strlen($password) < 6) {
-		$loi = "Mật khẩu phải có ít nhất 6 ký tự!";
-	} elseif (!preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password)) {
-		$loi = "Mật khẩu phải bao gồm ít nhất một chữ hoa, một chữ thường và một số!";
-	} else {
-		if ($users->checkemail($email)) {
-			$loi = "Email đã tồn tại, vui lòng chọn email khác!";
-		} else {
-			$users->insert_nguoidung($customer_name, $email, $password);
-
-			if ($users) {
-				$thongbao = "Đăng ký thành công!";
-			} else {
-				$loi = "Đã xảy ra lỗi khi đăng ký!";
-			}
-		}
-	}
+    $customer_name = $_POST['customer_name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+   
+    if (empty($customer_name) || empty($email) || empty($password)) {
+        $loi = "Vui lòng điền đầy đủ thông tin!";
+    } else {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $loi = "Địa chỉ email không hợp lệ!";
+        } else {
+            if (strlen($password) < 6 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password)) {
+                $loi = "Mật khẩu phải có ít nhất 6 ký tự và bao gồm ít nhất một chữ hoa, một chữ thường và một số!";
+            } else {
+                if ($users->checkemail($email)) {
+                    $loi = "Email đã tồn tại, vui lòng chọn email khác!";
+                } else {
+                    $result = $users->insert_nguoidung($customer_name, $email, $password);
+                    if ($result) {
+                        $thongbao = "Đăng ký thành công!";
+                    } else {
+                        $loi = "Đã xảy ra lỗi khi đăng ký!";
+                    }
+                }
+            }
+        }
+    }
 }
+
 ?>
 
  <!--================Login Box Area =================-->
@@ -44,23 +51,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			</div>
 			<div class="col-lg-6">
 				<div class="login_form_inner register_form_inner">
-					<h3>Create an account</h3>
+					<h3>Đăng ký</h3>
 					<form class="row login_form" action="" id="register_form" method="post">
 						<div class="col-md-12 form-group">
 							
 							<input type="text" class="form-control" id="name" name="customer_name"
-								placeholder="Username" onfocus="this.placeholder = ''"
+								placeholder="Tên" onfocus="this.placeholder = ''"
 								onblur="this.placeholder = 'Username'">
 						</div>
 						<div class="col-md-12 form-group">
 							
-							<input type="text" class="form-control" id="email" name="email" placeholder="Email Address"
-								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
+							<input type="text" class="form-control" id="email" name="email" placeholder="Email "
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
 						</div>
 						<div class="col-md-12 form-group">
 							
 							<input type="password" class="form-control" id="password" name="password"
-								placeholder="Password" onfocus="this.placeholder = ''"
+								placeholder="Mật khẩu" onfocus="this.placeholder = ''"
 								onblur="this.placeholder = 'Password'">
 						</div>
 

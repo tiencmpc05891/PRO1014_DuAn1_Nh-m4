@@ -1,12 +1,29 @@
 <?php
-
-
-if (!isset ($_SESSION['user'])) {
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['user'])) {
   header("Location: index.php?url=login");
   exit();
 }
 
+// Lấy thông tin người dùng từ session
 $user = $_SESSION['user'];
+
+// Kiểm tra xem có tham số customer_id trên URL không
+if (isset($_GET['customer_id'])) {
+  $customer_id = $_GET['customer_id'];
+} else {
+  // Nếu không có tham số customer_id, sử dụng customer_id từ session
+  $customer_id = $user['customer_id'];
+}
+
+// Lấy thông tin người dùng từ cơ sở dữ liệu
+$user_info = $users->getone_user($customer_id);
+
+// Kiểm tra xem có thông tin người dùng hay không
+if ($user_info) {
+  // Gán thông tin người dùng từ cơ sở dữ liệu vào biến $user để hiển thị trên trang
+  $user = $user_info;
+}
 ?>
 
 <section class="vh-100" style="background-color: #f4f5f7;">
@@ -25,48 +42,34 @@ $user = $_SESSION['user'];
 
               <a class="far fa-edit mb-5"
                 href="index.php?url=editprofile&customer_id=<?php echo $user['customer_id']; ?>"></a>
-
-
-
             </div>
             <div class="col-md-8">
               <div class="card-body p-4">
                 <h6>Thông tin</h6>
                 <hr class="mt-0 mb-4">
                 <div class="row pt-1">
-                  <div class="col-6 mb-3">
+                  <div class="col-8 mb-3">
                     <h6>Email</h6>
-
                     <p class="text-muted">
                       <?php echo $user['email']; ?>
                     </p>
                   </div>
-                  <div class="col-6 mb-3">
-                    <h6>Số điện thoại</h6>
-                    <p class="text-muted">
-                      <?php echo $user['phone']; ?>
+                  <div class="col-4 mb-3">
+                    <h6>Địa chỉ</h6>
+                    <p class="text-muted"><?php echo $user['address']; ?>
+             
                     </p>
                   </div>
                 </div>
-                <h6>Địa chỉ</h6>
-                <?php echo $user['address']; ?>
+                <h6>Số điện thoại</h6>
+                 <?php echo $user['phone']; ?>
                 <hr class="mt-0 mb-4">
-                <div class="row pt-1">
-                  <div class="col-6 mb-3">
-                    <h6>Thành phố</h6>
-                    <p class="text-muted">
-                      Cần Thơ
-                    </p>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <h6>Quận </h6>
-                    <p class="text-muted">Ninh Kiều</p>
-                  </div>
-                </div>
+                
                 <div class="d-flex justify-content-start">
-                  <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
-                  &nbsp;
-                  <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
+                  <a href="#!"><i class="fab fa-facebook-f fa-lg me-5"></i></a>
+                  &nbsp; &nbsp;
+                  <a href="#!"><i class="fab fa-twitter fa-lg me-5"></i></a>
+                  &nbsp; &nbsp;
                   <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
                 </div>
               </div>

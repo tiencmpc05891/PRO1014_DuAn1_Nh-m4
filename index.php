@@ -17,6 +17,7 @@ use dao\Comments;
 use dao\Cart;
 use dao\Ratings;
 use dao\Contacts;
+use dao\Blog;
 
 $sendmails = new Mailer();
 $database = new Connect();
@@ -27,7 +28,7 @@ $comments = new Comments();
 $cart = new Cart;
 $ratings = new Ratings();
 $contacts = new Contacts();
-
+$blog = new Blog();
 if (!isset($_SESSION['mycart']))
     $_SESSION['mycart'] = [];
 if (isset($_GET['url'])) {
@@ -171,10 +172,47 @@ if (isset($_GET['url'])) {
             break;
       
         case 'login':
-
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                if (empty($_POST['email']) || empty($_POST['password'])) {
+                    $error = "Vui lòng điền đầy đủ email và mật khẩu.";
+                } else {
+                    $email = $_POST['email'];
+                    $password = $_POST['password'];
+                    $recaptchaResponse = $_POST['g-recaptcha-response'];
+                    $secretKey = '6LcT3LQpAAAAAGm1fDRgMIvqG2TcTZabSrGFwshj';
+                    $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $recaptchaResponse;
+                    $recaptchaResponseData = json_decode(file_get_contents($recaptchaUrl));
+            
+                    if (!$recaptchaResponseData->success) {
+                        $error = "Vui lòng xác nhận bạn không phải là robot.";
+            
+                    } else {
+                        $existing_user = $users->sign_in($email);
+            
+                        if ($existing_user) {
+                            if ($password === $existing_user['password']) {
+                                $_SESSION['user'] = $existing_user;
+                                $_SESSION['customer_id'] = $existing_user['customer_id'];
+                                if ($existing_user['role'] === 'admin') {
+                                    header("Location: ../admin/index.php");
+                                    exit();
+                                } else {
+                                    header("Location: index.php");
+                                    exit();
+                                }
+                            } else {
+                                $error = "Mật khẩu không chính xác.";
+                            }
+                        } else {
+                            $error = "Email không tồn tại trong hệ thống.";
+                        }
+                    }
+                }
+            }
             include 'resources/users/login.php';
             break;
         case 'blog':
+           
             include 'resources/home/blog.php';
             break;
         case 'profile':
