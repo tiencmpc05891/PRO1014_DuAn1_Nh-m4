@@ -158,10 +158,11 @@
                             <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
 
                                 <th class="min-w-125px">Tiêu đề </th>
-                                <th class="min-w-125px">Nội dung</th>
-                                <th class="min-w-250px">Tác giả</th>
-                                
+                                <th class="">Nội dung</th>
+                                <th class="min-w-125px">Tác giả</th>
+                                 <th class="min-w-125px">Hình</th>
                                 <th class="min-w-125px">Ngày đăng bài</th>
+                               
                                 <th class="min-w-125px">Hành động</th>
 
                             </tr>

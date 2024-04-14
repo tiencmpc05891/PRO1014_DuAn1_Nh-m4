@@ -1,8 +1,8 @@
 <?php
 if (!empty($_POST['add'])) {
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $author = $_POST['author'];
+    $title = isset($_POST['title']) ? $_POST['title'] : '';
+    $content = isset($_POST['content']) ? $_POST['content'] : '';
+    $author = isset($_POST['author']) ? $_POST['author'] : '';
     $img = $_FILES['img']['name'];
     $target_dir = "../public/uploads/images/";
     $target_file = $target_dir . basename($_FILES["img"]["name"]);
@@ -228,16 +228,19 @@ if (!empty($_POST['add'])) {
 
                             </div>
                             <div class="fv-row mb-7">
-
                                 <label class="fs-6 fw-bold form-label mb-2">
-                                    <span class="required">Tên tác giả</span>
+                                    <span class="required">Tác giả</span>
                                     <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover"
                                         data-bs-trigger="hover" data-bs-html="true"
-                                        data-bs-content="Bài viết chỉ có một."></i>
+                                        data-bs-content="Chọn tác giả cho bài viết."></i>
                                 </label>
-
-                                <input type="text" name="author" class="form-control form-control-solid"
-                                    placeholder="Điền tên tác giả" />
+                                <select name="author" class="form-control form-control-solid">
+                                    <option value="" disabled selected>Chọn tác giả</option>
+                                    <option value="Huy">Minh Huy</option>
+                                    <option value="Tiến">Minh Tiến</option>
+                                    <option value="Giang">Xuân Giang</option>
+                                    <!-- Thêm các tác giả khác nếu cần -->
+                                </select>
                             </div>
                             <div class="text-center pt-15">
                                 <button type="reset" class="btn btn-light me-3"
