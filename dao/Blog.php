@@ -18,11 +18,20 @@ class Blog
         $params = array($title, $content, $author, $img);
         $this->database->pdo_execute($sql, $params);
     }
-    public function get_all_blog()
+    public function get_all_blog($kyw = "")
     {
-        $sql = "SELECT * FROM news";
-        $result = $this->database->pdo_query($sql);
-        return $result;
+        $sql = "SELECT * FROM news WHERE 1";
+        $params = array();
+    
+        if (!empty($kyw)) {
+            $sql .= " AND title LIKE ?";
+            $params[] = "%" . $kyw . "%";
+        }
+    
+        $sql .= " ORDER BY news_id ASC";
+    
+        $listbaiviet = $this->database->pdo_query($sql, $params);
+        return $listbaiviet;
     }
     public function delete_blog($news_id)
     {

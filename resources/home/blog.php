@@ -1,5 +1,13 @@
 <?php 
-$blogs = $blog->get_all_blog();
+
+
+$kyw = '';
+if (isset($_POST['kyw']) && $_POST['kyw'] !== '') {
+    $kyw = $_POST['kyw'];
+} elseif (isset($_GET['kyw']) && $_GET['kyw'] !== '') {
+    $kyw = $_GET['kyw'];
+}
+$blogs = $blog->get_all_blog($kyw);
 ?>
  <!-- ================ start banner area ================= -->	
  <section class="blog-banner-area" id="blog">
@@ -66,7 +74,7 @@ $blogs = $blog->get_all_blog();
                                     
                                 </ul>
                             </div>
-                        </div>
+</div>
                           <div class="col-md-9">
                               <div class="blog_post">
                                   <img src="<?= $img ?>" alt="">
@@ -120,16 +128,19 @@ $blogs = $blog->get_all_blog();
                   </div>
               </div>
               <div class="col-lg-4">
-                  <div class="blog_right_sidebar">
-                      <aside class="single_sidebar_widget search_widget">
-                          <div class="input-group">
-                              <input type="text" class="form-control" placeholder="Search Posts">
-                              <span class="input-group-btn">
-                                  <button class="btn btn-default" type="button">
-                                      <i class="lnr lnr-magnifier"></i>
-                                  </button>
-                              </span>
-                          </div>
+                            <div class="blog_right_sidebar">
+                                <aside class="single_sidebar_widget search_widget">
+                                <form method="GET" action="">
+<div class="input-group filter-bar-search">
+                <input type="hidden" name="url" value="blog">
+                <input type="text" placeholder="Search" name="kyw"
+                  value="<?= isset($_GET['kyw']) ? $_GET['kyw'] : '' ?>">
+                <div class="input-group-append">
+                  <button type="submit"><i class="ti-search"></i></button>
+                </div>
+              </div>
+            </form>
+
                           <!-- /input-group -->
                           <div class="br"></div>
                       </aside>
@@ -177,4 +188,4 @@ $blogs = $blog->get_all_blog();
   <!--================End Instagram Area =================-->
   
 
-  <!--================ Start footer Area  =================-->	
+  <!--================ Start footer Area  =================-->
