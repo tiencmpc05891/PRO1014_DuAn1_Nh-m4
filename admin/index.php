@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 require_once "../vendor/autoload.php";
-
+require_once "../PHPMailer/sourceforgot.php";
 include 'dist/header.php';
 include 'dist/slidebar.php';
 
@@ -19,6 +19,8 @@ use dao\Users;
 use dao\Admin;
 use dao\Cart;
 use dao\Contacts;
+use dao\Ratings;
+
 
 $database = new Connect();
 $danhmuc = new Categorys;
@@ -29,7 +31,8 @@ $contacts = new Contacts;
 $user = new Users();
 $admin = new Admin();
 $cart = new Cart;
-
+$rating = new Ratings();
+$sendmails = new Mailer();
 if (isset($_GET['url']) && ($_GET['url'] != "")) {
     switch ($_GET['url']) {
         case 'home':
@@ -211,7 +214,7 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             include 'dist/bill/listbill.php';
             break;
         case 'listcomment':
-            
+
             $listcomment = $comment->get_all_comments();
             include 'dist/comment/comment.php';
             break;
@@ -274,10 +277,38 @@ if (isset($_GET['url']) && ($_GET['url'] != "")) {
             $listuser = $user->get_all_user();
             include 'dist/user/user.php';
             break;
-            case 'contact':
+        case 'contact':
+            $listcontact = $contacts->get_all_contact();
+            include 'dist/contact/listcontact.php';
+            break;
+        case 'reply':
+            if (isset($_GET['id']) && ($_GET['id'] > 0)) {
+                $replys = $contacts->get_contact($_GET['id']);
+            }
+            include 'dist/contact/reply.php';
+            break;
+            case 'replyContact':
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $email = isset($_POST['email']) ? $_POST['email'] : '';
+                    $title = isset($_POST['title']) ? $_POST['title'] : '';
+                    $content = isset($_POST['content']) ? $_POST['content'] : '';        
+                    $addressMail = $email;
+                    $sendResult = $sendmails->sendMail($title, $content, $addressMail);
+                    if ($sendResult) {
+                        echo '<script>alert("Gửi liên hệ thành công!")</script>';
+                    } else {
+                        echo '<script>alert("Gửi liên hệ thành công!")</script>';
+                    }
+                } else {
+                    echo 'Invalid request.';
+                }
                 $listcontact = $contacts->get_all_contact();
                 include 'dist/contact/listcontact.php';
                 break;
+        case 'rating':
+            $listrating = $rating->get_all_rating();
+            include 'dist/rating/rating.php';
+            break;
         case 'admin':
             $listadmin = $admin->get_all_admin();
             include 'dist/admin/admin.php';

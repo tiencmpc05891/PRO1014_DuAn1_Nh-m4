@@ -1,3 +1,8 @@
+<style>
+    .star-yellow {
+        color: #ffd700;
+    }
+</style>
 <div class=" d-flex flex-column flex-row-fluid" id="kt_wrapper">
     <!--begin::Header-->
     <div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header"
@@ -9,15 +14,15 @@
                 data-kt-swapper="true" data-kt-swapper-mode="prepend"
                 data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
                 <!--begin::Heading-->
-                <h1 class="text-dark fw-bolder my-0 fs-2">Quản lý quản trị viên</h1>
+                <h1 class="text-dark fw-bolder my-0 fs-2">Quản lý đánh giá</h1>
                 <!--end::Heading-->
                 <!--begin::Breadcrumb-->
                 <ul class="breadcrumb fw-bold fs-base my-1">
                     <li class="breadcrumb-item text-muted">
                         <a href="index.php" class="text-muted">Home</a>
                     </li>
-                    <li class="breadcrumb-item text-muted">Quản lý quản trị viên</li>
-                    <li class="breadcrumb-item text-dark">Danh sách quản trị viên</li>
+                    <li class="breadcrumb-item text-muted">Quản lý đánh giá</li>
+                    <li class="breadcrumb-item text-dark">Danh sách đánh giá</li>
                 </ul>
                 <!--end::Breadcrumb-->
             </div>
@@ -142,20 +147,13 @@
                             </span>
                             <!--end::Svg Icon-->
                             <input type="text" data-kt-permissions-table-filter="search"
-                                class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm danh mục" />
+                                class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm " />
                         </div>
                         <!--end::Search-->
                     </div>
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <!--begin::Button-->
-                        <a href="index.php?url=addAdmin"><input type="button" value="Thêm quản trị viên"
-                                class="btn btn-light-primary">
 
-                        </a>
-                        <!--end::Button-->
-                    </div>
                     <!--end::Card toolbar-->
                 </div>
                 <!--end::Card header-->
@@ -163,32 +161,31 @@
                 <div class="card-body pt-0">
                     <!--begin::Table-->
                     <?php
-                        if (isset($thongbao) && $thongbao != "") {
-                            echo '   <button type="button" class="mb-1 btn btn-success" role="alert">
+                    if (isset($thongbao) && $thongbao != "") {
+                        echo '   <button type="button" class="mb-1 btn btn-success" role="alert">
                     <i  class=" mdi mdi-checkbox-marked-outline mr-1"></i>
                    ' . $thongbao . '
                   </button>';
-                        }
+                    }
 
-                        if (isset($loi) && $loi != "") {
-                            echo '   <button type="button" class="mb-1 btn btn-danger" role="alert">
+                    if (isset($loi) && $loi != "") {
+                        echo '   <button type="button" class="mb-1 btn btn-danger" role="alert">
                     <i class=" mdi mdi-close-circle-outline mr-1"></i>
                    ' . $loi . '
                   </button>';
-                        }
-                        ?>
+                    }
+                    ?>
                     <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
                         <!--begin::Table head-->
                         <thead>
                             <!--begin::Table row-->
                             <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
-
-                                <th class="min-w-125px">Mã quản trị viên</th>
-                                <th class="min-w-250px">Tên quản trị viên</th>
-                                <th class="min-w-125px">Email</th>
-                                <th class="min-w-125px">Chức vụ</th>
-                                <th class="min-w-125px">Hành động</th>
-
+                                <th class="min-w-100px">Mã đánh giá</th>
+                                <th class="min-w-100px">Tên khách hàng</th>
+                                <th class="min-w-100px">Sản phẩm</th>
+                                <th class="min-w-125px">Số sao</th>
+                                <th class="min-w-125px">Nội dung</th>
+                                <th class="min-w-125px">Ngày đánh giá</th>
                             </tr>
                             <!--end::Table row-->
                         </thead>
@@ -196,28 +193,27 @@
                         <!--begin::Table body-->
                         <tbody class="fw-bold text-gray-600">
                             <?php
-                            foreach ($listadmin as $admin) {
-                                $deleteadmin = "index.php?url=deleteadmin&admin_id=" . $admin['admin_id'];
-                                $editadmin = "index.php?url=editadmin&admin_id=" . $admin['admin_id'];
-
+                            foreach ($listrating as $ratings) {
+                                $customer_name = $rating->get_name_by_id($ratings['customer_id']);
+                                $product_name = $rating->get_product_by_id($ratings['product_id']);
                                 echo '                        
-                                <tr>
-                                    <td>' . $admin['admin_id'] . '</td>
-                                    <td>' . $admin['username'] . '</td>
-                                    <td>' . $admin['email'] . '</td>
-                                    <td>' . $admin['role'] . '</td>
-                                
-                                  
-                                    <td>
-                                    <a href="' . $editadmin . '"><input class="btn btn-warning" type="button"  value="Sửa"></a> 
-                                        
-                                    </td>
-                                </tr>';
+                                    <tr>
+                                        <td>' . $ratings['rating_id'] . '</td>
+                                        <td>' . $customer_name['customer_name'] . '</td>
+                                        <td>' . $product_name['product_name'] . '</td>
+                                        <td>';                               
+                                for ($i = 1; $i <= $ratings['rating']; $i++) {
+                                    echo '<i class="fas fa-star star-yellow "></i>';
+                                }
+                                echo '</td>
+                                        <td>' . $ratings['review'] . '</td>
+                                        <td>' . $ratings['rating_date'] . '</td>
+                                    </tr>';
                             }
                             ?>
                         </tbody>
-
                     </table>
+
 
                 </div>
 

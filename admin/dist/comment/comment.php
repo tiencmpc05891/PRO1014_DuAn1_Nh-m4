@@ -178,8 +178,7 @@
                             <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
 
                                 <th class="min-w-115px">Mã bình luận</th>
-                                <th class="min-w-115px">Mã sản phẩm</th>
-                                <th class="min-w-115px">Mã khách hàng</th>
+                                <th class="min-w-115px">Tên sản phẩm</th>
                                 <th class="min-w-115px">Tên khách hàng</th>
                                 <th class="min-w-250px">Nội dung</th>
                                 <th class="min-w-115px">Ngày bình luận</th>
@@ -196,12 +195,11 @@
                                 $deletecomment = "index.php?url=deletecomment&comment_id=" . $comments['comment_id'];
                                 // Gọi phương thức từ đối tượng hiện tại trong vòng lặp
                                 $customer_name = $comment->get_name_by_id($comments['customer_id']);
-
+                                $product_name = $comment->get_product_by_id($comments['product_id']);
                                 echo '                        
                                     <tr>
                                         <td>' . $comments['comment_id'] . '</td>
-                                        <td>' . $comments['product_id'] . '</td>
-                                        <td>' . $comments['customer_id'] . '</td>
+                                        <td>' . $product_name['product_name'] . '</td>
                                         <td>' . $customer_name['customer_name'] . '</td>
                                         <td>' . $comments['comment'] . '</td>
                                         <td>' . $comments['comment_date'] . '</td>

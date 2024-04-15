@@ -27,5 +27,19 @@ class Contacts
         $result = $this->database->pdo_query($sql, $params);
         return $result;
     }
+    public function get_contact($id)
+    {
+        $sql = "SELECT * FROM contacts WHERE id =" . $id;
+        $params = array($id);
+        $sp = $this->database->pdo_query_one($sql, $params);
+        return $sp;
+
+    }
+    public function delete_contact($id)
+    {
+        $sql = "DELETE FROM contacts  WHERE id = ?";
+        $params = array($id);
+        $this->database->pdo_execute($sql, $params);
+    }
 
 }

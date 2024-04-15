@@ -5,7 +5,7 @@ use Exception;
 use dao\Connect;
 
 class Ratings
-{ 
+{
     private $database;
 
     public function __construct()
@@ -41,23 +41,38 @@ class Ratings
         $result = $this->database->pdo_query_one($sql, $params);
         return $result;
     }
-    public function calculateRatingStats($all_ratings) {
+    public function get_product_by_id($rating_id)
+    {
+        $sql = "SELECT product_name FROM products WHERE product_id = ?";
+        $params = array($rating_id);
+        $result = $this->database->pdo_query_one($sql, $params);
+        return $result;
+    }
+    public function calculateRatingStats($all_ratings)
+    {
         $total_reviews = count($all_ratings);
         $total_rating = 0;
         $rating_counts = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0);
-    
+
         foreach ($all_ratings as $rating) {
             $total_rating += $rating['rating'];
             $rating_counts[$rating['rating']]++;
         }
-    
+
         $average_rating = ($total_reviews > 0) ? round($total_rating / $total_reviews, 1) : 0;
-    
+
         return array(
             'total_reviews' => $total_reviews,
             'average_rating' => $average_rating,
             'rating_counts' => $rating_counts
         );
     }
+    public function get_all_rating()
+    {
+        $sql = "SELECT * FROM ratings";
+        $result = $this->database->pdo_query($sql);
+        return $result;
+    }
     
+
 }

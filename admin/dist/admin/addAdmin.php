@@ -4,17 +4,24 @@ if (!empty($_POST['add'])) {
     $email = $_POST['email'];
     $role = $_POST['role'];
 
-    $username_duplicate = $admin->checkname($username);
-    $email_duplicate = $admin->checkemail($email);
+    // Kiểm tra xem các trường đã được điền đầy đủ chưa
     if (empty($username) || empty($email)) {
-        $loi = "Vui lòng điền đầy đủ thông tin!";}
-    if ($username_duplicate || $email_duplicate) {
-        $loi = "Tên người dùng hoặc email đã tồn tại trong hệ thống.";
+        $loi = "Vui lòng điền đầy đủ thông tin!";
     } else {
-        $thongbao = "Thêm quản trị viên thành công";
-        $admin->insert_admin($username, $email, $role);
+        // Kiểm tra xem tên người dùng và email đã tồn tại chưa
+        $username_duplicate = $admin->checkname($username);
+        $email_duplicate = $admin->checkemail($email);
+
+        if ($username_duplicate || $email_duplicate) {
+            $loi = "Tên người dùng hoặc email đã tồn tại trong hệ thống.";
+        } else {
+            // Thêm quản trị viên vào database
+            $thongbao = "Thêm quản trị viên thành công";
+            $admin->insert_admin($username, $email, $role);
+        }
     }
 }
+
 ?>
 
 

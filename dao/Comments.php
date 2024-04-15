@@ -41,7 +41,13 @@ class Comments
         $stmt->execute();
     }
 
-
+    public function get_product_by_id($comment_id)
+    {
+        $sql = "SELECT product_name FROM products WHERE product_id = ?";
+        $params = array($comment_id);
+        $result = $this->database->pdo_query_one($sql, $params);
+        return $result;
+    }
 
     public function get_name_by_id($comment_id)
     {

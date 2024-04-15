@@ -338,28 +338,29 @@ $dssp = $sanpham->loadall_sanpham("", $category_id);
 								}
 
 								?>
-							<div class="review_list">
-    <div class="review_item">
-        <div class="media">
-            <div class="d-flex align-self-center mt-0">
-                <img src="public/img/5e67fa0bcd0230fb933e9c7a6169e953.jpg" alt="User Avatar" width="50px">
-            </div>
-            <div class="media-body">
-                <div class="d-flex justify-content-between align-items-center ">
-                    <h4 class="mb-0"><?php echo $namerating['customer_name']; ?></h4>
-                    <span><?php echo $rating['rating_date']; ?></span>
-                </div>
+								<div class="review_list">
+									<div class="review_item">
+										<div class="media">
+											<div class="d-flex align-self-center mt-0">
+												<img src="public/img/5e67fa0bcd0230fb933e9c7a6169e953.jpg" alt="User Avatar"
+													width="50px">
+											</div>
+											<div class="media-body">
+												<div class="d-flex justify-content-between align-items-center ">
+													<h4 class="mb-0"><?php echo $namerating['customer_name']; ?></h4>
+													<span><?php echo $rating['rating_date']; ?></span>
+												</div>
 
-                <!-- Hiển thị số sao -->
-                <?php echo $stars_html; ?>
+												<!-- Hiển thị số sao -->
+												<?php echo $stars_html; ?>
 
-                <p>
-                    <?php echo $rating['review']; ?>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
+												<p>
+													<?php echo $rating['review']; ?>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
 
 								<?php
 							}

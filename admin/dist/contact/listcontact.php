@@ -142,20 +142,13 @@
                             </span>
                             <!--end::Svg Icon-->
                             <input type="text" data-kt-permissions-table-filter="search"
-                                class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm danh mục" />
+                                class="form-control form-control-solid w-250px ps-15" placeholder="Tìm kiếm " />
                         </div>
                         <!--end::Search-->
                     </div>
                     <!--end::Card title-->
                     <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <!--begin::Button-->
-                        <a href="index.php?url=addAdmin"><input type="button" value="Thêm quản trị viên"
-                                class="btn btn-light-primary">
-
-                        </a>
-                        <!--end::Button-->
-                    </div>
+                 
                     <!--end::Card toolbar-->
                 </div>
                 <!--end::Card header-->
@@ -183,11 +176,13 @@
                             <!--begin::Table row-->
                             <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
 
-                                <th class="min-w-125px">Mã liên hệ</th>
-                                <th class="min-w-250px">Tên khách hàng</th>
-                                <th class="min-w-125px">Email</th>
+                                <th class="min-w-100px">Mã liên hệ</th>
+                                <th class="min-w-100px">Tên khách hàng</th>
+                                <th class="min-w-100px">Email</th>
                                 <th class="min-w-125px">Tiêu đề</th>
+                                <th class="min-w-125px">Nội dung</th>
                                 <th class="min-w-125px">Ngày gửi</th>
+                                <th class="min-w-125px">Hành động</th>
 
                             </tr>
                             <!--end::Table row-->
@@ -197,15 +192,19 @@
                         <tbody class="fw-bold text-gray-600">
                             <?php
                             foreach ($listcontact as $contact) {
-                                
+                                $reply = "index.php?url=reply&id=" . $contact['id'];
                                 echo '                        
                                 <tr>
                                     <td>' . $contact['id'] . '</td>
                                     <td>' . $contact['name'] . '</td>
+                                    <td>' . $contact['email'] . '</td>
                                     <td>' . $contact['subject'] . '</td>
                                     <td>' . $contact['message'] . '</td>
                                     <td>' . $contact['created_at'] . '</td>
-                                  
+                                    <td>
+                                    <a href="' . $reply . '"><input class="btn btn-primary" type="button"  value="Phản hồi"></a> 
+                                       
+                                    </td>
                                    
                                 </tr>';
                             }
